@@ -13,6 +13,15 @@ const NavbarV1 = () => {
           />
         </div>
       </div>
+
+      <div className="flex box-border md:gap-4 gap-2 items-center justify-center">
+        <div className="md:px-4 md:py-2 box-border text-white rounded-3xl text-xl hover:bg-gray-700 cursor-pointer">
+          Sign Up Today
+        </div>
+        <div className="px-4 py-2 box-border border-1 text-blue-400 border-blue-400 rounded-3xl text-xl hover:bg-blue-200 cursor-pointer">
+          Log In
+        </div>
+      </div>
     </nav>
   );
 };
