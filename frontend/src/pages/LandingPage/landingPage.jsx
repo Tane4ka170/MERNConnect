@@ -27,10 +27,7 @@ const LandingPage = () => {
             </span>
             .
           </div>
-          <div
-            href="/signup"
-            className="mx-auto text-center mb-4 text-lg w-[70%] mt-4"
-          >
+          <div className="mx-auto text-center mb-4 text-lg w-[70%] mt-4">
             {" "}
             Not a member yet?{" "}
             <span className="text-blue-200 cursor-pointer hover:underline">
