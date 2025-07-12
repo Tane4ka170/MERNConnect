@@ -1,10 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   return (
     <div className="my-4 py-[50px] md:pl-[120px] px-5 md:flex justify-between">
       <div className="md:w-[40%]">
-        <div className="text-4xl mx-auto text-gray-300">
+        <div className="text-4xl mx-auto text-gray-700">
           Step Into Your Professional Network
           <div className="my-3 flex mx-auto mt-[20px] bg-white gap-2 rounded-3xl w-[70%] text-black cursor-pointer">
             Google button
@@ -14,26 +15,29 @@ const LandingPage = () => {
           </div>
           <div className="mx-auto mb-4 text-sm w-[70%] mt-6">
             By selecting “Continue,” you confirm that you agree to{" "}
-            <span className="text-blue-100 cursor-pointer hover:underline">
+            <span className="text-blue-700 cursor-pointer hover:underline">
               NetWorkin’s User Agreement
             </span>
             ,{" "}
-            <span className="text-blue-100 cursor-pointer hover:underline">
+            <span className="text-blue-700 cursor-pointer hover:underline">
               Privacy Policy
             </span>{" "}
             , and{" "}
-            <span className="text-blue-100 cursor-pointer hover:underline">
+            <span className="text-blue-700 cursor-pointer hover:underline">
               Cookie Policy
             </span>
             .
           </div>
-          <div className="mx-auto text-center mb-4 text-lg w-[70%] mt-4">
+          <Link
+            to={"/signUp"}
+            className="mx-auto text-center mb-4 text-lg w-[70%] mt-4"
+          >
             {" "}
             Not a member yet?{" "}
-            <span className="text-blue-200 cursor-pointer hover:underline">
+            <span className="text-blue-900 cursor-pointer hover:underline">
               Sign up for NetWorkin
             </span>
-          </div>
+          </Link>
         </div>
       </div>
 
