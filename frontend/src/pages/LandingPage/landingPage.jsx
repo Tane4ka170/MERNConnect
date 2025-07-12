@@ -38,7 +38,13 @@ const LandingPage = () => {
       </div>
 
       <div className="md:w-[50%] h-120">
-        <img src="" alt="Image" className="h-full w-full" />
+        <img
+          src={
+            "https://lh6.googleusercontent.com/proxy/MHTLDl2L6cZReJ0Fdq9SnMQmVrYSP_qCnxAirGnrw0QBFhSIMDLrDtze-D0vXbTSKuE3hs6oNypwMkR37iGXIp63FhghSbz0bVmftFQfPg1aE0H0F0Hy14-NHcGra8F102Wa"
+          }
+          alt="Image"
+          className="h-full w-full"
+        />
       </div>
     </div>
   );
