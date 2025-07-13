@@ -10,9 +10,12 @@ const LandingPage = () => {
           <div className="my-3 flex mx-auto mt-[20px] bg-white gap-2 rounded-3xl w-[70%] text-black cursor-pointer">
             Google button
           </div>
-          <div className="flex mx-auto mt-[20px] py-2 px-2 bg-white gap-2 rounded-3xl items-center w-[70%]  justify-between text-black hover:bg-gray-600 border-2 cursor-pointer">
+          <Link
+            to={"/login"}
+            className="flex mx-auto mt-[20px] py-2 px-2 bg-white gap-2 rounded-3xl items-center w-[70%]  justify-between text-black hover:bg-gray-600 border-2 cursor-pointer"
+          >
             Log in using your email
-          </div>
+          </Link>
           <div className="mx-auto mb-4 text-sm w-[70%] mt-6">
             By selecting “Continue,” you confirm that you agree to{" "}
             <span className="text-blue-700 cursor-pointer hover:underline">
