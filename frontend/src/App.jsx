@@ -4,6 +4,7 @@ import NavbarV1 from "./components/NavbarV1/navbarV1";
 import LandingPage from "./pages/LandingPage/landingPage";
 import { Routes, Route } from "react-router-dom";
 import SignUp from "./pages/SignUp/signUp";
+import Login from "./pages/Login/login";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/signUp" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
         <Footer />
       </div>
