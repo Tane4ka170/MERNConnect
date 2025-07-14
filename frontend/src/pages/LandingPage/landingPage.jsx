@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import GoogleLoginComp from "../../components/GoogleLogin/googleLoginComp";
 
 const LandingPage = () => {
   return (
@@ -8,7 +9,7 @@ const LandingPage = () => {
         <div className="text-4xl mx-auto text-gray-700">
           Step Into Your Professional Network
           <div className="my-3 flex mx-auto mt-[20px] bg-white gap-2 rounded-3xl w-[70%] text-black cursor-pointer">
-            Google button
+            <GoogleLoginComp />
           </div>
           <Link
             to={"/login"}
