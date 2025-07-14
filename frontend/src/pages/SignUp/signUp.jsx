@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import GoogleLoginComp from "../../components/GoogleLogin/googleLoginComp";
 
 const SignUp = () => {
   return (
@@ -45,7 +46,9 @@ const SignUp = () => {
           <div className="border-b-2 border-gray-500 w-[45%] my-6" />
         </div>
 
-        <div>Google button</div>
+        <div>
+          <GoogleLoginComp />
+        </div>
       </div>
 
       <div className="mt-4 mb-10">
