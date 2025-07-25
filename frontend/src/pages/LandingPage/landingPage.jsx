@@ -48,7 +48,7 @@ const LandingPage = () => {
       <div className="md:w-[50%] h-120">
         <img
           src={
-            "https://lh6.googleusercontent.com/proxy/MHTLDl2L6cZReJ0Fdq9SnMQmVrYSP_qCnxAirGnrw0QBFhSIMDLrDtze-D0vXbTSKuE3hs6oNypwMkR37iGXIp63FhghSbz0bVmftFQfPg1aE0H0F0Hy14-NHcGra8F102Wa"
+            "https://images.squarespace-cdn.com/content/v1/5d4d836df83bdc0001fbe230/1615926475963-0WFIF3X9CM1XEUQ3FJ5Z/unsplash-image-POzx_amnWJw.jpg"
           }
           alt="Image"
           className="h-full w-full"
