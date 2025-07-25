@@ -9,7 +9,7 @@ import Navbar2 from "./components/Navbar2/navbar2";
 import Feeds from "./pages/Feeds/feeds";
 
 function App() {
-  const isLogin = false;
+  const isLogin = true;
   return (
     <>
       <div className="bg-gray-50 w-[100%] h-[100%] box-border">
