@@ -1,8 +1,15 @@
 import { useState } from "react";
+import HomeIcon from "@mui/icons-material/Home";
+import Diversity3Icon from "@mui/icons-material/Diversity3";
+import WorkIcon from "@mui/icons-material/Work";
+import MessageIcon from "@mui/icons-material/Message";
+import AddAlertIcon from "@mui/icons-material/AddAlert";
 import "./navbar2.css";
+import { useLocation } from "react-router-dom";
 
 const Navbar2 = () => {
   const [dropDown, setDropDown] = useState(false);
+  const location = useLocation();
 
   return (
     <div className="bg-white h-13 flex justify-between py-1 px-5 xl:px-50 fixed top-0 w-[100%] z-1000">
@@ -39,6 +46,90 @@ const Navbar2 = () => {
               </div>
             </div>
           )}
+        </div>
+      </div>
+
+      <div className="hidden gap-10 md:flex">
+        <div className="flex flex-col items-center cursor-pointer">
+          <HomeIcon
+            sx={{ color: location.pathname === "/feeds" ? "black" : "gray" }}
+          />
+          <div
+            className={`text-sm text-gray-950 ${
+              location.pathname === "/feeds" ? "border-b-3" : ""
+            }`}
+          >
+            Home
+          </div>
+        </div>
+        <div className="flex flex-col items-center cursor-pointer">
+          <Diversity3Icon
+            sx={{
+              color: location.pathname === "/mynetwork" ? "black" : "gray",
+            }}
+          />
+          <div
+            className={`text-sm text-gray-950 ${
+              location.pathname === "/mynetwork" ? "border-b-3" : ""
+            }`}
+          >
+            Connections
+          </div>
+        </div>
+        <div className="flex flex-col items-center cursor-pointer">
+          <WorkIcon
+            sx={{ color: location.pathname === "/resume" ? "black" : "gray" }}
+          />
+          <div
+            className={`text-sm text-gray-950 ${
+              location.pathname === "/resume" ? "border-b-3" : ""
+            }`}
+          >
+            CV
+          </div>
+        </div>
+        <div className="flex flex-col items-center cursor-pointer">
+          <MessageIcon
+            sx={{ color: location.pathname === "/messages" ? "black" : "gray" }}
+          />
+          <div
+            className={`text-sm text-gray-950 ${
+              location.pathname === "/messages" ? "border-b-3" : ""
+            }`}
+          >
+            Chats
+          </div>
+        </div>
+        <div className="flex flex-col items-center cursor-pointer">
+          <div>
+            <AddAlertIcon
+              sx={{
+                color:
+                  location.pathname === "/notifications" ? "black" : "gray",
+              }}
+            />{" "}
+            <span className="p-1 rounded-full text-sm bg-red-950 text-white">
+              1
+            </span>
+          </div>
+
+          <div
+            className={`text-sm text-gray-950 ${
+              location.pathname === "/notifications" ? "border-b-3" : ""
+            }`}
+          >
+            Alerts
+          </div>
+        </div>
+        <div className="flex flex-col items-center cursor-pointer">
+          <img
+            src={
+              "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/User_icon-cp.png/1200px-User_icon-cp.png"
+            }
+            alt="User icon-cp"
+            className="w-8 h-8 rounded-full"
+          />
+          <div className="text-sm text-gray-950">Me</div>
         </div>
       </div>
     </div>
