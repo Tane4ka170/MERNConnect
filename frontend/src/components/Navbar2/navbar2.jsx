@@ -42,7 +42,7 @@ const Navbar2 = () => {
                   />
                 </div>
 
-                <div>Danish</div>
+                <div>Virk</div>
               </div>
             </div>
           )}
