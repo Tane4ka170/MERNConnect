@@ -4,6 +4,7 @@ import ProfileCard from "../../components/ProfileCard/profileCard";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import ArticleIcon from "@mui/icons-material/Article";
+import Advertisement from "../../components/Advertisement/advertisement";
 
 const Feeds = () => {
   return (
@@ -30,6 +31,7 @@ const Feeds = () => {
 
       {/* Middle */}
       <div className="w-[100%] py-5 sm:w-[50%]">
+        {/* Post section */}
         <div>
           <Card padding={1}>
             <div className="flex gap-2 items-center">
@@ -73,7 +75,23 @@ const Feeds = () => {
           <Card padding={1}>
             <div className="text-xl">NetWorkin News</div>
             <div className="text-gray-500">Trending news</div>
+            <div className="my-1">
+              <div className="text-md">
+                How AI is Changing the Future of Work{" "}
+              </div>
+              <div className="text-xs text-gray-800">2h ago</div>
+            </div>
+            <div className="my-1">
+              <div className="text-md">
+                Emerging Trends in Remote Collaboration
+              </div>
+              <div className="text-xs text-gray-800">5h ago</div>
+            </div>
           </Card>
+        </div>
+
+        <div className="my-5 sticky top-19">
+          <Advertisement />
         </div>
       </div>
     </div>
