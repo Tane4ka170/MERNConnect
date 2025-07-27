@@ -35,7 +35,7 @@ const Navbar2 = () => {
                 <div>
                   <img
                     src={
-                      "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/User_icon-cp.png/1200px-User_icon-cp.png"
+                      "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
                     }
                     alt=""
                     className="w-10 h-10 rounded-full"
@@ -124,7 +124,7 @@ const Navbar2 = () => {
         <div className="flex flex-col items-center cursor-pointer">
           <img
             src={
-              "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/User_icon-cp.png/1200px-User_icon-cp.png"
+              "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
             }
             alt="User icon-cp"
             className="w-8 h-8 rounded-full"
