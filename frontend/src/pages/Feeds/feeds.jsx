@@ -8,6 +8,7 @@ import Advertisement from "../../components/Advertisement/advertisement";
 import Post from "../../components/Post/post";
 
 const Feeds = () => {
+  const [addPostModel, setPostModal]= useState(false)
   return (
     <div className="px-5 xl:px-50 py-9 flex gap-5 w-full mt-5 bg-gray-300">
       {/* Left */}
