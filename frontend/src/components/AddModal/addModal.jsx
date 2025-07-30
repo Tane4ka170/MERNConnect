@@ -15,6 +15,18 @@ const AddModal = () => {
         </div>
         <div className="text-2xl">Qadim Virk</div>
       </div>
+
+      <div>
+        <textarea
+          cols={50}
+          rows={10}
+          placeholder="What's on your mind?"
+          className="my-3 outline-0 text-xl p-2"
+        ></textarea>
+      </div>
+      <div>
+        <img src="" alt="" className="w-10 h-10 rounded-xl " />
+      </div>
     </div>
   );
 };
