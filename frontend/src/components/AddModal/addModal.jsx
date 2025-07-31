@@ -1,4 +1,4 @@
-import React from "react";
+import ImageIcon from "@mui/icons-material/Image";
 
 const AddModal = () => {
   return (
@@ -25,7 +25,25 @@ const AddModal = () => {
         ></textarea>
       </div>
       <div>
-        <img src="" alt="" className="w-10 h-10 rounded-xl " />
+        <img
+          src={
+            "https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg?cs=srgb&dl=pexels-bri-schneiter-28802-346529.jpg&fm=jpg"
+          }
+          alt=""
+          className="w-10 h-10 rounded-xl "
+        />
+      </div>
+
+      <div className="flex justify-between">
+        <div className="my-2">
+          <label htmlFor="inputFile" className="cursor-pointer">
+            <ImageIcon />
+          </label>
+          <input type="file" className="hidden" id="inputFile" />
+        </div>
+        <div className="bg-blue-400 text-white py-1 px-3 cursor-pointer rounded-2xl h-fit">
+          Post
+        </div>
       </div>
     </div>
   );
