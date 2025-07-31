@@ -5,7 +5,7 @@ import WorkIcon from "@mui/icons-material/Work";
 import MessageIcon from "@mui/icons-material/Message";
 import AddAlertIcon from "@mui/icons-material/AddAlert";
 import "./navbar2.css";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar2 = () => {
   const [dropDown, setDropDown] = useState(false);
@@ -50,7 +50,10 @@ const Navbar2 = () => {
       </div>
 
       <div className="hidden gap-10 md:flex">
-        <div className="flex flex-col items-center cursor-pointer">
+        <Link
+          className="flex flex-col items-center cursor-pointer"
+          to={"/feeds"}
+        >
           <HomeIcon
             sx={{ color: location.pathname === "/feeds" ? "black" : "gray" }}
           />
@@ -61,8 +64,11 @@ const Navbar2 = () => {
           >
             Home
           </div>
-        </div>
-        <div className="flex flex-col items-center cursor-pointer">
+        </Link>
+        <Link
+          className="flex flex-col items-center cursor-pointer"
+          to={"/myNetwork"}
+        >
           <Diversity3Icon
             sx={{
               color: location.pathname === "/mynetwork" ? "black" : "gray",
@@ -70,13 +76,16 @@ const Navbar2 = () => {
           />
           <div
             className={`text-sm text-gray-950 ${
-              location.pathname === "/mynetwork" ? "border-b-3" : ""
+              location.pathname === "/myNetwork" ? "border-b-3" : ""
             }`}
           >
             Connections
           </div>
-        </div>
-        <div className="flex flex-col items-center cursor-pointer">
+        </Link>
+        <Link
+          className="flex flex-col items-center cursor-pointer"
+          to={"/resume"}
+        >
           <WorkIcon
             sx={{ color: location.pathname === "/resume" ? "black" : "gray" }}
           />
@@ -87,8 +96,11 @@ const Navbar2 = () => {
           >
             CV
           </div>
-        </div>
-        <div className="flex flex-col items-center cursor-pointer">
+        </Link>
+        <Link
+          className="flex flex-col items-center cursor-pointer"
+          to={"/messages"}
+        >
           <MessageIcon
             sx={{ color: location.pathname === "/messages" ? "black" : "gray" }}
           />
@@ -99,8 +111,11 @@ const Navbar2 = () => {
           >
             Chats
           </div>
-        </div>
-        <div className="flex flex-col items-center cursor-pointer">
+        </Link>
+        <Link
+          className="flex flex-col items-center cursor-pointer"
+          to={"/notifications"}
+        >
           <div>
             <AddAlertIcon
               sx={{
@@ -120,7 +135,7 @@ const Navbar2 = () => {
           >
             Alerts
           </div>
-        </div>
+        </Link>
         <div className="flex flex-col items-center cursor-pointer">
           <img
             src={
