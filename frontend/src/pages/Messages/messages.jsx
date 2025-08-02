@@ -3,6 +3,7 @@ import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 import Conversation from "../../components/Conversation/conversation";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ImageIcon from "@mui/icons-material/Image";
+import Advertisement from "../../components/Advertisement/advertisement";
 
 const Messages = () => {
   return (
@@ -105,11 +106,20 @@ const Messages = () => {
                     </label>
                     <input type="file" id="messageImage" className="hidden" />
                   </div>
-                  <div className="px-3 py-1 cursor-pointer rounded-2xl"></div>
+                  <div className="px-3 py-1 cursor-pointer rounded-2xl border-1 bg-blue-50">
+                    Send
+                  </div>
                 </div>
               </div>
             </div>
           </Card>
+        </div>
+
+        {/* Right side */}
+        <div className="hidden md:flex md:w-[25%]">
+          <div className="sticky top-19">
+            <Advertisement />
+          </div>
         </div>
       </div>
     </div>
