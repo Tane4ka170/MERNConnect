@@ -14,13 +14,13 @@ const Navbar2 = () => {
   return (
     <div className="bg-white h-13 flex justify-between py-1 px-5 xl:px-50 fixed top-0 w-[100%] z-1000">
       <div className="flex gap-2 items-center">
-        <div>
+        <Link to={"/"}>
           <img
             src={"https://cdn-icons-png.flaticon.com/512/942/942749.png"}
             alt="logo"
             className="w-8 h-8"
           />
-        </div>
+        </Link>
 
         <div className="relative">
           <input
@@ -136,7 +136,10 @@ const Navbar2 = () => {
             Alerts
           </div>
         </Link>
-        <div className="flex flex-col items-center cursor-pointer">
+        <Link
+          to={`/profile/fgfj`}
+          className="flex flex-col items-center cursor-pointer"
+        >
           <img
             src={
               "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
@@ -145,7 +148,7 @@ const Navbar2 = () => {
             className="w-8 h-8 rounded-full"
           />
           <div className="text-sm text-gray-950">Me</div>
-        </div>
+        </Link>
       </div>
     </div>
   );
