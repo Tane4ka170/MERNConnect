@@ -159,7 +159,18 @@ const Profile = () => {
                 </div>
               </div>
               <div className="mt-5">
-                <div className="p-2 border-t-1 border-gray-100"></div>
+                <div className="p-2 border-t-1 border-gray-100 flex justify-between">
+                  <div>
+                    <div className="text-lg">Full-Stack Developer</div>
+                    <div className="text-sm">Issac and Sons</div>
+                    <div className="text-sm text-gray-900">
+                      Mar 2022 – Present
+                    </div>
+                    <div className="text-sm text-gray-900">
+                      Hinjawadi, India
+                    </div>
+                  </div>
+                </div>
               </div>
             </Card>
           </div>
