@@ -3,8 +3,27 @@ import Advertisement from "../../components/Advertisement/advertisement";
 import Card from "../../components/Card/card";
 import Post from "../../components/Post/post";
 import AddIcon from "@mui/icons-material/Add";
+import { useState } from "react";
+import Modal from "../../components/Modal/modal";
+import ImageModal from "../../components/ImageModal/imageModal";
 
 const Profile = () => {
+  const [imageSetModal, setImageSetModal] = useState(false);
+  const [circularImage, setCircularImage] = useState(false);
+
+  const handleImageModalOpenClose = () => {
+    setImageSetModal((prev) => !prev);
+  };
+
+  const handleOnEditCover = () => {
+    setImageSetModal(true);
+    setCircularImage(false);
+  };
+
+  const handleCircularImage = () => {
+    setImageSetModal(true);
+    setCircularImage(true);
+  };
   return (
     <div className="px-5 xl:px-50 py-9 flex flex-col gap-5 w-full mt-5 bg-gray-50 ">
       <div className="flex justify-between">
@@ -14,7 +33,10 @@ const Profile = () => {
             <Card padding={0}>
               <div className="w-full h-fit">
                 <div className="relative w-full h-[200px]">
-                  <div className="absolute cursor-pointer top-3 right-3 z-20 w-[35px] flex justify-center items-center h-[35px] rounded-full p-3 bg-white">
+                  <div
+                    className="absolute cursor-pointer top-3 right-3 z-20 w-[35px] flex justify-center items-center h-[35px] rounded-full p-3 bg-white"
+                    onClick={handleOnEditCover}
+                  >
                     <EditIcon />
                   </div>
                   <img
@@ -24,7 +46,10 @@ const Profile = () => {
                     alt=""
                     className="w-full h-[200px] rounded-tr-lg rounded-tl-lg"
                   />
-                  <div className="absolute object-cover top-24 left-6 z-10">
+                  <div
+                    className="absolute object-cover top-24 left-6 z-10"
+                    onClick={handleCircularImage}
+                  >
                     <img
                       src={
                         "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
@@ -170,6 +195,9 @@ const Profile = () => {
                       Hinjawadi, India
                     </div>
                   </div>
+                  <div className="cursor-pointer">
+                    <EditIcon />
+                  </div>
                 </div>
               </div>
             </Card>
@@ -183,6 +211,11 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      {imageSetModal && (
+        <Modal closeModal={handleImageModalOpenClose} title="Add Image">
+          <ImageModal isCircular={circularImage} />
+        </Modal>
+      )}
     </div>
   );
 };
