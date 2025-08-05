@@ -6,10 +6,12 @@ import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
 import Modal from "../../components/Modal/modal";
 import ImageModal from "../../components/ImageModal/imageModal";
+import EditInfoModal from "../../components/EditInfoModal/editInfoModal";
 
 const Profile = () => {
   const [imageSetModal, setImageSetModal] = useState(false);
   const [circularImage, setCircularImage] = useState(false);
+  const [infoModal, setInfoModal] = useState(false);
 
   const handleImageModalOpenClose = () => {
     setImageSetModal((prev) => !prev);
@@ -23,6 +25,10 @@ const Profile = () => {
   const handleCircularImage = () => {
     setImageSetModal(true);
     setCircularImage(true);
+  };
+
+  const handleInfoModal = () => {
+    setInfoModal(true);
   };
   return (
     <div className="px-5 xl:px-50 py-9 flex flex-col gap-5 w-full mt-5 bg-gray-50 ">
@@ -61,7 +67,10 @@ const Profile = () => {
                 </div>
 
                 <div className="mt-10 relative px-8 py-2">
-                  <div className="absolute cursor-pointer top-3 right-3 z-20 w-[35px] flex justify-center items-center h-[35px] rounded-full p-3 bg-white">
+                  <div
+                    className="absolute cursor-pointer top-3 right-3 z-20 w-[35px] flex justify-center items-center h-[35px] rounded-full p-3 bg-white"
+                    onClick={handleInfoModal}
+                  >
                     <EditIcon />
                   </div>
                   <div className="w-full">
@@ -214,6 +223,12 @@ const Profile = () => {
       {imageSetModal && (
         <Modal closeModal={handleImageModalOpenClose} title="Add Image">
           <ImageModal isCircular={circularImage} />
+        </Modal>
+      )}
+
+      {infoModal && (
+        <Modal title="Modify Details" closeModal={handleInfoModal}>
+          <EditInfoModal />
         </Modal>
       )}
     </div>
