@@ -11,6 +11,7 @@ import AboutModal from "../../components/AboutModal/aboutModal";
 import ExpModal from "../../components/ExpModal/expModal";
 import MessageModal from "../../components/MessageModal/messageModal";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const [imageSetModal, setImageSetModal] = useState(false);
@@ -199,15 +200,15 @@ const Profile = () => {
 
               {/* Parent div for scrollable activities */}
               <div className="overflow-x-auto my-2 flex gap-1 overflow-y-hidden w-full">
-                <div className="cursor-pointer shrink-0 w-[350px]">
+                <div className="cursor-pointer shrink-0 w-[350px] h-[560px]">
                   <Post profile={1} />
                 </div>
               </div>
 
               <div className="w-full flex justify-center items-center">
-                <div className="p-2 rounded-xl cursor-pointer hover:bg-gray-400 hover:text-white">
+                <Link className="p-2 rounded-xl cursor-pointer hover:bg-gray-400 hover:text-white">
                   View All Posts <ArrowCircleRightIcon />
-                </div>
+                </Link>
               </div>
             </Card>
           </div>
