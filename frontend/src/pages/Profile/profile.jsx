@@ -11,9 +11,10 @@ import AboutModal from "../../components/AboutModal/aboutModal";
 import ExpModal from "../../components/ExpModal/expModal";
 import MessageModal from "../../components/MessageModal/messageModal";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const Profile = () => {
+  const { id } = useParams();
   const [imageSetModal, setImageSetModal] = useState(false);
   const [circularImage, setCircularImage] = useState(false);
   const [infoModal, setInfoModal] = useState(false);
@@ -200,13 +201,31 @@ const Profile = () => {
 
               {/* Parent div for scrollable activities */}
               <div className="overflow-x-auto my-2 flex gap-1 overflow-y-hidden w-full">
-                <div className="cursor-pointer shrink-0 w-[350px] h-[560px]">
+                <Link
+                  to={`/profile/${id}/activities/58`}
+                  className="cursor-pointer shrink-0 w-[350px] h-[560px]"
+                >
                   <Post profile={1} />
-                </div>
+                </Link>
+                <Link
+                  to={`/profile/${id}/activities/59`}
+                  className="cursor-pointer shrink-0 w-[350px] h-[560px]"
+                >
+                  <Post profile={1} />
+                </Link>
+                <Link
+                  to={`/profile/${id}/activities/60`}
+                  className="cursor-pointer shrink-0 w-[350px] h-[560px]"
+                >
+                  <Post profile={1} />
+                </Link>
               </div>
 
               <div className="w-full flex justify-center items-center">
-                <Link className="p-2 rounded-xl cursor-pointer hover:bg-gray-400 hover:text-white">
+                <Link
+                  to={`/profile/${id}/activities`}
+                  className="p-2 rounded-xl cursor-pointer hover:bg-gray-400 hover:text-white"
+                >
                   View All Posts <ArrowCircleRightIcon />
                 </Link>
               </div>
