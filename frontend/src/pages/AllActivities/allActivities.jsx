@@ -1,6 +1,12 @@
 import React from "react";
+import { useParams } from "react-router-dom";
+import Card from "../../components/Card/card";
+import ProfileCard from "../../components/ProfileCard/profileCard";
+import Advertisement from "../../components/Advertisement/advertisement";
+import Post from "../../components/Post/post";
 
 const AllActivities = () => {
+  const { id } = useParams();
   return (
     <div className="px-5 xl:px-50 py-9 flex gap-5 w-full mt-5 bg-gray-300">
       {/* Left */}
@@ -8,15 +14,29 @@ const AllActivities = () => {
         <div className="h-fit">
           <ProfileCard />
         </div>
+      </div>
 
-        {/* Middle */}
-        <div className="w-[100%] py-5 sm:w-[50%]"></div>
+      {/* Middle */}
+      <div className="w-[100%] py-5 sm:w-[50%]">
+        <div>
+          <Card padding={1}>
+            <div className="text-xl">Full Activity</div>
+            <div className="cursor-pointer w-fit p-2 border-1 rounded-4xl bg-green-200 my-2 font-semibold">
+              Posts
+            </div>
+            <div className="my-2 flex flex-col gap-2">
+              <div>
+                <Post />
+              </div>
+            </div>
+          </Card>
+        </div>
+      </div>
 
-        {/* Right */}
-        <div className="w-[26%] py-5 hidden md:block">
-          <div className="my-5 sticky top-19">
-            <Advertisement />
-          </div>
+      {/* Right */}
+      <div className="w-[26%] py-5 hidden md:block">
+        <div className="my-5 sticky top-19">
+          <Advertisement />
         </div>
       </div>
     </div>
