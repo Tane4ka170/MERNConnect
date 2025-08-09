@@ -128,13 +128,14 @@ const Navbar2 = () => {
             </span>
           </div>
 
-          <div
+          <Link
+            to={"/notifications"}
             className={`text-sm text-gray-950 ${
               location.pathname === "/notifications" ? "border-b-3" : ""
             }`}
           >
             Alerts
-          </div>
+          </Link>
         </Link>
         <Link
           to={`/profile/fgfj`}
