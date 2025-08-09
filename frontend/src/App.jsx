@@ -13,6 +13,7 @@ import Messages from "./pages/Messages/messages";
 import Profile from "./pages/Profile/profile";
 import AllActivities from "./pages/AllActivities/allActivities";
 import SingleActivity from "./pages/SingleActivity/singleActivity";
+import Notification from "./pages/Notification/notification";
 
 function App() {
   const isLogin = true;
@@ -28,6 +29,7 @@ function App() {
           <Route path="/myNetwork" element={<MyNetwork />} />
           <Route path="/resume" element={<Resume />} />
           <Route path="/messages" element={<Messages />} />
+          <Route path="/notifications" element={<Notification />} />
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/profile/:id/activities" element={<AllActivities />} />
           <Route
