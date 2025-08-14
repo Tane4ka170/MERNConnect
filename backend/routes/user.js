@@ -1,9 +1,14 @@
 const express = require("express");
-const route = express.Router();
+const router = express.Router();
 const UserController = require("../controller/user");
+const Authentication = require("../authentication/auth");
 
-route.post("/register", UserController.register);
-route.post("/login", UserController.login);
-route.post("/google", UserController.loginTroughGmail);
+router.post("/register", UserController.register);
+router.post("/login", UserController.login);
+router.post("/google", UserController.loginTroughGmail);
 
-module.exports = route;
+router.get("/self", Authentication.auth, (req, res) => {
+  return res.status(200).json({ user: req.user });
+});
+
+module.exports = router;
