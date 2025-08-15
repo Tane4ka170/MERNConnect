@@ -94,3 +94,50 @@ exports.loginTroughGmail = async (req, res) => {
       .json({ error: "Internal server error", message: error.message });
   }
 };
+
+exports.updateUser = async (req, res) => {
+  try {
+    const { user } = req.body;
+    const isExist = await User.findById(req.user._id);
+    if (!isExist) {
+      return res.status(404).json({ error: "User does not exist" });
+    }
+    const updatedData = await User.findByIdAndUpdate(isExist._id, user);
+    console.log(updatedData);
+    const userData = await User.findById(req.user._id);
+    res.status(200).json({
+      message: "User details updated successfully",
+      user: userData,
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Internal server error", message: error.message });
+  }
+};
+
+exports.getProfileById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const isExist = await User.findById(id);
+    if (!isExist) {
+      return res.status(404).json({ error: "No matching user found" });
+    }
+    res.status(200).json({
+      message: "User retrieved successfully",
+      user: isExist,
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Internal server error", message: error.message });
+  }
+};
+
+exports.logout = async (req, res) => {
+  res.clearCookie("token", cookieOptions).json({
+    message: "Signed out successfully",
+  });
+};
