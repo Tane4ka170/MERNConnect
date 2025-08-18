@@ -37,7 +37,7 @@ exports.likeDislikePost = async (req, res) => {
     }
 
     await post.save();
-    res.status(200).json({
+    return res.status(200).json({
       message: index !== 1 ? "Post disliked" : "Post liked",
       likes: post.likes,
     });
@@ -51,6 +51,61 @@ exports.likeDislikePost = async (req, res) => {
 
 exports.getAllPosts = async (req, res) => {
   try {
+    let posts = await PostModel.find()
+      .sort({ createdAt: -1 })
+      .populate("user", "-password");
+    return res.status(200).json({ message: "Data retrieved", posts: posts });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Internal server error", message: error.message });
+  }
+};
+
+exports.getPostByPostId = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const post = await PostModel.findById(postId).populate("user", "-password");
+    if (!post) {
+      return res.status(400).json({ error: "Post does not exist" });
+    }
+    return res.status(200).json({ message: "Data retrieved", post: post });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Internal server error", message: error.message });
+  }
+};
+
+exports.getTop5PostForUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const posts = await PostModel.find({ user: userId })
+      .sort({
+        createdAt: -1,
+      })
+      .populate("user", "-password")
+      .limit(5);
+    return res.status(200).json({ message: "Data retrieved", posts: posts });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Internal server error", message: error.message });
+  }
+};
+
+exports.getAllPostByUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const posts = await PostModel.find({ user: userId })
+      .sort({
+        createdAt: -1,
+      })
+      .populate("user", "-password");
+    return res.status(200).json({ message: "Data retrieved", posts: posts });
   } catch (error) {
     console.error(error);
     res
