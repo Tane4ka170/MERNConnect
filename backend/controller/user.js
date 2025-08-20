@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const NotificationModel = require("../models/notification");
 const bcryptjs = require("bcryptjs");
 const { OAuth2Client } = require("google-auth-library");
 const jwt = require("jsonwebtoken");
@@ -140,4 +141,74 @@ exports.logout = async (req, res) => {
   res.clearCookie("token", cookieOptions).json({
     message: "Signed out successfully",
   });
+};
+
+exports.findUser = async (req, res) => {
+  try {
+    let { query } = req.query;
+    console.log(query);
+    const users = await User.find({
+      $and: [
+        { _id: { $ne: req.user._id } },
+        {
+          $or: [
+            { name: { $regex: new RegExp(`^${query}`, "i") } },
+            { email: { $regex: new RegExp(`^${query}`, "i") } },
+          ],
+        },
+      ],
+    });
+    return res.status(201).json({
+      message: "Member retrieved successfully",
+      users: users,
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Internal server error", message: error.message });
+  }
+};
+
+exports.sendFriendRequest = async (req, res) => {
+  try {
+    const sender = req.user._id;
+    const { receiver } = req.body;
+
+    const userExist = await User.findById(receiver);
+    if (!userExist) {
+      return res.status(404).json({ error: "User does not exist" });
+    }
+
+    const index = req.user.friends.findIndex((id) => id.equals(receiver));
+    if (index !== -1) {
+      return res.status(400).json({ error: "Already in friends list" });
+    }
+
+    const lastIndex = userExist.pending_friends.findIndex((id) =>
+      id.equals(req.user._id)
+    );
+    if (lastIndex !== -1) {
+      return res.status(400).json({ error: "Request already submitted" });
+    }
+
+    userExist.pending_friends.push(sender);
+    let content = `${req.user.name} invited you to connect`;
+    const notification = new NotificationModel({
+      sender,
+      receiver,
+      content,
+      type: "friendRequest",
+    });
+    await userExist.save();
+
+    return res.status(200).json({
+      message: "Connection request sent",
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Internal server error", message: error.message });
+  }
 };
