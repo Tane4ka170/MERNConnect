@@ -12,6 +12,11 @@ router.post(
   Authentication.auth,
   UserController.sendFriendRequest
 );
+router.post(
+  "/acceptFriendRequest",
+  Authentication.auth,
+  UserController.acceptFriendRequest
+);
 
 router.get("/self", Authentication.auth, (req, res) => {
   return res.status(200).json({ user: req.user });
