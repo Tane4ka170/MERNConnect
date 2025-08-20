@@ -212,3 +212,48 @@ exports.sendFriendRequest = async (req, res) => {
       .json({ error: "Internal server error", message: error.message });
   }
 };
+
+exports.acceptFriendRequest = async (req, res) => {
+  try {
+    let { friendId } = req.body;
+    let selfId = req.user._id;
+
+    const friendData = await User.findById(friendId);
+    if (!friendData) {
+      return res.status(404).json({ error: "User does not exist" });
+    }
+
+    const index = friendData.pending_friends.findIndex((id) =>
+      id.equals(friendId)
+    );
+    if (index !== -1) {
+      req.user.pending_friends.splice(index, 1);
+    } else {
+      return res.status(400).json({ error: "No request found from this user" });
+    }
+
+    req.user.friends.push(friendId);
+    friendData.friends.push(req.user._id);
+
+    let content = `${req.user.f_name} accepted your friend request`;
+    const notification = new NotificationModel({
+      sender: req.user._id,
+      receiver: friendId,
+      content,
+      type: "friendRequest",
+    });
+    await notification.save();
+
+    await friendData.save();
+    await req.user.save();
+
+    return res.status(200).json({
+      message: "You are now friends",
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Internal server error", message: error.message });
+  }
+};
