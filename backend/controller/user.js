@@ -261,7 +261,60 @@ exports.acceptFriendRequest = async (req, res) => {
 
 exports.getFriendsList = async (req, res) => {
   try {
-    console.log(req.user.populate("friends"));
+    let friendList = await req.user.populate("friends");
+    return res.status(200).json({
+      friends: friendList.friends,
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Internal server error", message: error.message });
+  }
+};
+
+exports.getPendingFriendsList = async (req, res) => {
+  try {
+    let pendingFriendsList = await req.user.populate("pending_friends");
+    return res.status(200).json({
+      pendingFriends: pendingFriendsList.pending_friends,
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Internal server error", message: error.message });
+  }
+};
+
+exports.removeFromFriendList = async (req, res) => {
+  try {
+    let selfId = req.user._id;
+    let { friendId } = req.params;
+
+    const friendData = await User.findById(friendId);
+    if (!friendData) {
+      return res.status(404).json({ error: "User does not exist" });
+    }
+
+    const index = req.user.friends.findIndex((id) => id.equals(friendId));
+    const friendIndex = friendData.friends.findIndex((id) => id.equals(selfId));
+    if (index !== -1) {
+      req.user.friends.splice(index, 1);
+    } else {
+      return res.status(400).json({ error: "No request found from this user" });
+    }
+
+    if (friendIndex !== -1) {
+      friendData.friends.splice(friendIndex, 1);
+    } else {
+      return res.status(400).json({ error: "No request found from this user" });
+    }
+
+    await req.user.save();
+    await friendData.save();
+
+    return res.status(200).json({ message: "You are no longer connected" });
   } catch (error) {
     console.error(error);
     res
