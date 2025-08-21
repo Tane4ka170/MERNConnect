@@ -224,20 +224,21 @@ exports.acceptFriendRequest = async (req, res) => {
     }
 
     const index = friendData.pending_friends.findIndex((id) =>
-      id.equals(friendId)
+      id.equals(selfId)
     );
-    if (index !== -1) {
-      req.user.pending_friends.splice(index, 1);
-    } else {
+
+    if (index === -1) {
       return res.status(400).json({ error: "No request found from this user" });
     }
 
+    friendData.pending_friends.splice(index, 1);
+
     req.user.friends.push(friendId);
-    friendData.friends.push(req.user._id);
+    friendData.friends.push(selfId);
 
     let content = `${req.user.f_name} accepted your friend request`;
     const notification = new NotificationModel({
-      sender: req.user._id,
+      sender: selfId,
       receiver: friendId,
       content,
       type: "friendRequest",
@@ -250,6 +251,17 @@ exports.acceptFriendRequest = async (req, res) => {
     return res.status(200).json({
       message: "You are now friends",
     });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ error: "Internal server error", message: error.message });
+  }
+};
+
+exports.getFriendsList = async (req, res) => {
+  try {
+    console.log(req.user.populate("friends"));
   } catch (error) {
     console.error(error);
     res
