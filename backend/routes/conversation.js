@@ -9,4 +9,10 @@ router.post(
   ConversationController.addConversation
 );
 
+router.get(
+  "/get-conversation",
+  Authentication.auth,
+  ConversationController.getConversation
+);
+
 module.exports = router;
