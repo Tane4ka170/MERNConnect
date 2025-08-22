@@ -17,7 +17,7 @@ app.use("/api/auth", UserRoutes);
 app.use("/api/post", PostRoutes);
 app.use("/api/notification", NotificationRoutes);
 app.use("/api/comment", CommentRoutes);
-app.use("");
+app.use("/api/conversation", ConversationRoutes);
 
 app.get("/", (req, res) => {
   res.send("You belong with me... in the system.");
