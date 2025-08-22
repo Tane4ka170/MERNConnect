@@ -41,7 +41,7 @@ exports.getConversation = async (req, res) => {
   try {
     let loggedId = req.user._id;
     let conversation = await ConversationModel.find({
-      members: $in[loggedId],
+      members: { $in: [loggedId] },
     })
       .populate("members", "-password")
       .sort({ createdAt: -1 });
