@@ -9,11 +9,13 @@ const NotificationRoutes = require("./routes/notification");
 const CommentRoutes = require("./routes/comment");
 const ConversationRoutes = require("./routes/conversation");
 const MessageRoutes = require("./routes/message");
+const cors = require("cors");
 
 const PORT = process.env.PORT || 1478;
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use("/api/auth", UserRoutes);
 app.use("/api/post", PostRoutes);
 app.use("/api/notification", NotificationRoutes);
