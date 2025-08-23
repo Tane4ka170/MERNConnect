@@ -1,8 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import GoogleLoginComp from "../../components/GoogleLogin/googleLoginComp";
 
 const SignUp = () => {
+  const [registerField, setRegisterField] = useState({
+    email: "",
+    password: "",
+    f_name: "",
+  });
+
+  const handleInputField = (event, key) => {
+    setRegisterField({ ...registerField, [key]: event.target.value });
+  };
+
+  const handleRegister = () => {
+    if (
+      registerField.email.trim().length === 0 ||
+      registerField.password.trim().length === 0 ||
+      registerField.f_name.trim().length === 0
+    ) {
+      return toast.error("Please fill all the fields");
+    }
+  };
   return (
     <div className="w-full flex flex-col items-center justify-center">
       <div className="text-4xl mb-5">
@@ -16,6 +35,8 @@ const SignUp = () => {
               type="text"
               className="w-full text-xl border-2 rounded-lg px-5 py-1"
               placeholder="Enter your email"
+              value={registerField.email}
+              onChange={(event) => handleInputField(event, "email")}
             />
           </div>
           <div>
@@ -24,6 +45,8 @@ const SignUp = () => {
               type="password"
               className="w-full text-xl border-2 rounded-lg px-5 py-1"
               placeholder="Enter your password"
+              value={registerField.password}
+              onChange={(event) => handleInputField(event, "password")}
             />
           </div>
           <div>
@@ -32,10 +55,16 @@ const SignUp = () => {
               type="text"
               className="w-full text-xl border-2 rounded-lg px-5 py-1"
               placeholder="Enter your full name"
+              value={registerField.f_name}
+              onChange={(event) => handleInputField(event, "f_name")}
+            />
             />
           </div>
 
-          <div className="w-full hover:bg-blue-900 bg-blue-100 text-white py-3 px-4 rounded-xl text-center cursor-pointer my-2">
+          <div
+            className="w-full hover:bg-blue-900 bg-blue-100 text-white py-3 px-4 rounded-xl text-center cursor-pointer my-2"
+            onClick={handleRegister}
+          >
             Register
           </div>
         </div>
