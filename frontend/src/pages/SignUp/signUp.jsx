@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import GoogleLoginComp from "../../components/GoogleLogin/googleLoginComp";
+import { ToastContainer, toast } from "react-toastify";
+import axios from "axios";
 
 const SignUp = () => {
   const [registerField, setRegisterField] = useState({
@@ -19,7 +21,7 @@ const SignUp = () => {
       registerField.password.trim().length === 0 ||
       registerField.f_name.trim().length === 0
     ) {
-      return toast.error("Please fill all the fields");
+      return toast.error("Kindly complete all required fields");
     }
   };
   return (
@@ -58,7 +60,6 @@ const SignUp = () => {
               value={registerField.f_name}
               onChange={(event) => handleInputField(event, "f_name")}
             />
-            />
           </div>
 
           <div
@@ -86,6 +87,7 @@ const SignUp = () => {
           Log in
         </Link>
       </div>
+      <ToastContainer />
     </div>
   );
 };
