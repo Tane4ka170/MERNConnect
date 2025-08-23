@@ -52,11 +52,23 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={isLogin ? <Navigate to={"/feeds"} /> : <LandingPage />}
+            element={
+              isLogin ? (
+                <Navigate to={"/feeds"} />
+              ) : (
+                <LandingPage changeLoginValue={changeLoginValue} />
+              )
+            }
           />
           <Route
             path="/signUp"
-            element={isLogin ? <Navigate to={"/feeds"} /> : <SignUp />}
+            element={
+              isLogin ? (
+                <Navigate to={"/feeds"} />
+              ) : (
+                <SignUp changeLoginValue={changeLoginValue} />
+              )
+            }
           />
           <Route
             path="/login"
