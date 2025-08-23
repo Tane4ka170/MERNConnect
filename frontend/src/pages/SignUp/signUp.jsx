@@ -1,21 +1,22 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GoogleLoginComp from "../../components/GoogleLogin/googleLoginComp";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 
-const SignUp = () => {
+const SignUp = (props) => {
   const [registerField, setRegisterField] = useState({
     email: "",
     password: "",
     f_name: "",
   });
+  const navigate = useNavigate();
 
   const handleInputField = (event, key) => {
     setRegisterField({ ...registerField, [key]: event.target.value });
   };
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (
       registerField.email.trim().length === 0 ||
       registerField.password.trim().length === 0 ||
@@ -23,6 +24,22 @@ const SignUp = () => {
     ) {
       return toast.error("Kindly complete all required fields");
     }
+    await axios
+      .post("http://localhost:1478/api/auth/register", registerField)
+      .then((res) => {
+        toast.success("You have signed up successfully");
+        setRegisterField({
+          ...registerField,
+          email: "",
+          password: "",
+          f_name: "",
+        });
+        navigate("/login");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err?.response?.data?.error);
+      });
   };
   return (
     <div className="w-full flex flex-col items-center justify-center">
@@ -77,7 +94,7 @@ const SignUp = () => {
         </div>
 
         <div>
-          <GoogleLoginComp />
+          <GoogleLoginComp changeLoginValue={props.changeLoginValue} />
         </div>
       </div>
 
