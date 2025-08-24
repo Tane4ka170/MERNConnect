@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../../components/Card/card";
 import ProfileCard from "../../components/ProfileCard/profileCard";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
@@ -9,9 +9,47 @@ import Post from "../../components/Post/post";
 import Modal from "../../components/Modal/modal";
 import AddModal from "../../components/AddModal/addModal";
 import Loader from "../../components/Loader/loader";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 const Feeds = () => {
   const [addPostModel, setPostModal] = useState(false);
+  const [personalData, setPersonalData] = useState(null);
+  const [post, setPost] = useState(null);
+
+  // const fetchSelfData = async () => {
+  //   await axios
+  //     .get("http://localhost:1478/api/auth/self", {
+  //       withCredentials: true,
+  //     })
+  //     .then((res) => {
+  //       setPersonalData(res.data.user);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       toast.error(err?.response?.data?.error);
+  //     });
+  // };
+
+  const fetchData = async () => {
+    try {
+      const [selfData, postData] = await Promise.all([
+        await axios.get("http://localhost:1478/api/auth/self", {
+          withCredentials: true,
+        }),
+        await axios.get("http://localhost:1478/api/post/getAllPosts"),
+      ]);
+      setPersonalData(selfData.data.user);
+      localStorage.setItem("userInfo");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    // fetchSelfData();
+    fetchData();
+  }, []);
 
   const handleOpenPostModal = () => {
     setPostModal((prev) => !prev);
@@ -123,6 +161,7 @@ const Feeds = () => {
         </Modal>
       )}
       <Loader />
+      <ToastContainer />
     </div>
   );
 };
