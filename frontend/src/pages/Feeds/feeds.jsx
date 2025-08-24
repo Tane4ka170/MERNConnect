@@ -15,46 +15,40 @@ import { ToastContainer, toast } from "react-toastify";
 const Feeds = () => {
   const [addPostModel, setPostModal] = useState(false);
   const [personalData, setPersonalData] = useState(null);
-  const [post, setPost] = useState(null);
-
-  // const fetchSelfData = async () => {
-  //   await axios
-  //     .get("http://localhost:1478/api/auth/self", {
-  //       withCredentials: true,
-  //     })
-  //     .then((res) => {
-  //       setPersonalData(res.data.user);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       toast.error(err?.response?.data?.error);
-  //     });
-  // };
+  const [post, setPost] = useState([]);
+  const [loading, setLoading] = useState(true); // 👈 стейт для лоадера
 
   const fetchData = async () => {
     try {
       const [userData, postData] = await Promise.all([
-        await axios.get("http://localhost:1478/api/auth/self", {
+        axios.get("http://localhost:1478/api/auth/self", {
           withCredentials: true,
         }),
-        await axios.get("http://localhost:1478/api/post/getAllPosts"),
+        axios.get("http://localhost:1478/api/post/getAllPosts"),
       ]);
       setPersonalData(userData.data.user);
       localStorage.setItem("userInfo", JSON.stringify(userData.data.user));
       setPost(postData.data.posts);
     } catch (error) {
       console.log(error);
+      toast.error(error?.response?.data?.error || "Failed to load data");
+    } finally {
+      setLoading(false); // 👈 коли все закінчилося, ховаємо лоадер
     }
   };
 
   useEffect(() => {
-    // fetchSelfData();
     fetchData();
   }, []);
 
   const handleOpenPostModal = () => {
     setPostModal((prev) => !prev);
   };
+
+  if (loading) {
+    return <Loader />; // 👈 показуємо тільки лоадер поки вантажиться
+  }
+
   return (
     <div className="px-5 xl:px-50 py-9 flex gap-5 w-full mt-5 bg-gray-300">
       {/* Left */}
@@ -84,9 +78,7 @@ const Feeds = () => {
           <Card padding={1}>
             <div className="flex gap-2 items-center">
               <img
-                src={
-                  "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
-                }
+                src={personalData?.profile_pic}
                 alt=""
                 className="rounded-4xl w-13 h-13 border-2 border-white cursor-pointer"
               />
@@ -127,9 +119,9 @@ const Feeds = () => {
         <div className="border-b-1 border-gray-100 w-[100%] my-5" />
 
         <div className="w-full flex flex-col gap-5">
-          {post.map((item, index) => {
-            return <Post key={index} item={item} personalData={personalData} />;
-          })}
+          {post.map((item, index) => (
+            <Post key={index} item={item} personalData={personalData} />
+          ))}
         </div>
       </div>
 
@@ -158,12 +150,12 @@ const Feeds = () => {
           <Advertisement />
         </div>
       </div>
+
       {addPostModel && (
         <Modal title={""} closeModal={handleOpenPostModal}>
-          <AddModal />
+          <AddModal personalData={personalData} />
         </Modal>
       )}
-      <Loader />
       <ToastContainer />
     </div>
   );
