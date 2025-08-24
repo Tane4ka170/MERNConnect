@@ -33,14 +33,15 @@ const Feeds = () => {
 
   const fetchData = async () => {
     try {
-      const [selfData, postData] = await Promise.all([
+      const [userData, postData] = await Promise.all([
         await axios.get("http://localhost:1478/api/auth/self", {
           withCredentials: true,
         }),
         await axios.get("http://localhost:1478/api/post/getAllPosts"),
       ]);
-      setPersonalData(selfData.data.user);
-      localStorage.setItem("userInfo");
+      setPersonalData(userData.data.user);
+      localStorage.setItem("userInfo", JSON.stringify(userData.data.user));
+      setPost(postData.data.posts);
     } catch (error) {
       console.log(error);
     }
@@ -59,7 +60,7 @@ const Feeds = () => {
       {/* Left */}
       <div className="w-[21%] sm:block sm:w-[23%] hidden py-5">
         <div className="h-fit">
-          <ProfileCard />
+          <ProfileCard data={personalData} />
         </div>
 
         <div className="w-full my-5">
@@ -126,7 +127,9 @@ const Feeds = () => {
         <div className="border-b-1 border-gray-100 w-[100%] my-5" />
 
         <div className="w-full flex flex-col gap-5">
-          <Post />
+          {post.map((item, index) => {
+            return <Post key={index} item={item} personalData={personalData} />;
+          })}
         </div>
       </div>
 
