@@ -1,24 +1,17 @@
 import React from "react";
 import Card from "../Card/card";
 
-const ProfileCard = () => {
+const ProfileCard = (props) => {
   return (
     <Card padding={1}>
       <div className="relative h-25">
         <div className="relative h-22 w-full rounded-md">
-          <img
-            src={
-              "https://www.lifesizecutouts.com.au/cdn/shop/products/new-york-skyline-2000x4500-ref.jpg?v=1654326564"
-            }
-            alt=""
-          />
+          <img src={props.data?.cover_pic} alt="" />
         </div>
 
         <div className="absolute top-14 left-6 z-10">
           <img
-            src={
-              "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
-            }
+            src={props.data?.profile_pic}
             alt="User"
             className="rounded-4xl border-2 h-16 w-16 border-white cursor-pointer"
           />
@@ -26,10 +19,10 @@ const ProfileCard = () => {
       </div>
 
       <div className="p-5">
-        <div className="text-xl">Qadim Virk</div>
-        <div className="text-sm my-1">Full-Stack Developer </div>
-        <div className="text-sm my-1">Hinjawadi, India</div>
-        <div className="text-sm my-1">Issac and Sons</div>
+        <div className="text-xl">{props.data?.f_name}</div>
+        <div className="text-sm my-1">{props.data?.headline} </div>
+        <div className="text-sm my-1">{props.data?.curr_location}</div>
+        <div className="text-sm my-1">{props.data?.curr_company}</div>
       </div>
     </Card>
   );
