@@ -116,26 +116,25 @@ const Navbar2 = () => {
           className="flex flex-col items-center cursor-pointer"
           to={"/notifications"}
         >
-          <div>
+          <div className="relative flex items-center">
             <AddAlertIcon
               sx={{
                 color:
                   location.pathname === "/notifications" ? "black" : "gray",
               }}
-            />{" "}
-            <span className="p-1 rounded-full text-sm bg-red-950 text-white">
+            />
+            <span className="absolute -top-2 -right-3 p-1 rounded-full text-xs bg-red-600 text-white">
               1
             </span>
           </div>
 
-          <Link
-            to={"/notifications"}
+          <div
             className={`text-sm text-gray-950 ${
               location.pathname === "/notifications" ? "border-b-3" : ""
             }`}
           >
             Alerts
-          </Link>
+          </div>
         </Link>
         <Link
           to={`/profile/fgfj`}
