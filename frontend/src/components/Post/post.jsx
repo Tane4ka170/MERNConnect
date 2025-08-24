@@ -5,7 +5,7 @@ import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import CommentIcon from "@mui/icons-material/Comment";
 import SendIcon from "@mui/icons-material/Send";
 
-const Post = ({ profile }) => {
+const Post = ({ profile, item, key, personalData }) => {
   const [seeMore, setSeeMore] = useState(false);
   const [comment, setComment] = useState(false);
 
