@@ -1,4 +1,5 @@
 import ImageIcon from "@mui/icons-material/Image";
+import axios from "axios";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -9,6 +10,25 @@ const AddModal = (props) => {
   const handlePost = async () => {
     if ((desc.trim().length === 0) & !imageUrl) {
       return toast.error("Kindly provide at least one field");
+    }
+  };
+
+  const handleUploadImage = async (e) => {
+    const files = e.target.files[0];
+    const data = new FormData();
+    data.append("file", files);
+
+    data.append("upload_preset", "NetWorkin");
+
+    try {
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/doo1ifq0i/image/upload/",
+        data
+      );
+      const imageUrl = response.data.url;
+      setImageUrl(imageUrl);
+    } catch (error) {
+      console.log(error);
     }
   };
   return (
@@ -36,13 +56,7 @@ const AddModal = (props) => {
       </div>
       {imageUrl && (
         <div>
-          <img
-            src={
-              "https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg?cs=srgb&dl=pexels-bri-schneiter-28802-346529.jpg&fm=jpg"
-            }
-            alt=""
-            className="w-10 h-10 rounded-xl "
-          />
+          <img src={imageUrl} alt="" className="w-10 h-10 rounded-xl " />
         </div>
       )}
 
@@ -51,7 +65,12 @@ const AddModal = (props) => {
           <label htmlFor="inputFile" className="cursor-pointer">
             <ImageIcon />
           </label>
-          <input type="file" className="hidden" id="inputFile" />
+          <input
+            type="file"
+            className="hidden"
+            id="inputFile"
+            onChange={handleUploadImage}
+          />
         </div>
         <div
           className="bg-blue-400 text-white py-1 px-3 cursor-pointer rounded-2xl h-fit"
