@@ -8,6 +8,8 @@ import SendIcon from "@mui/icons-material/Send";
 const Post = ({ profile, item, key, personalData }) => {
   const [seeMore, setSeeMore] = useState(false);
   const [comment, setComment] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [noOfLikes, setNoOfLikes] = useState(item?.likes.length);
 
   const desc = item?.desc;
 
@@ -15,6 +17,7 @@ const Post = ({ profile, item, key, personalData }) => {
     e.preventDefault();
   };
 
+  const handleLikeFuction = () => {};
   return (
     <Card padding={0}>
       <div className="flex gap-3 p-4">
@@ -55,7 +58,7 @@ const Post = ({ profile, item, key, personalData }) => {
       <div className="my-2 p-4 flex justify-between items-center">
         <div className="flex gap-1 items-center">
           <ThumbUpIcon sx={{ color: "blue", fontSize: 20 }} />{" "}
-          <div className="text-sm text-gray-900"> {item?.likes} Likes</div>
+          <div className="text-sm text-gray-900"> {noOfLikes} Likes</div>
         </div>
         <div className="flex gap-1 items-center">
           <ThumbUpIcon sx={{ color: "blue", fontSize: 20 }} />{" "}
@@ -68,9 +71,16 @@ const Post = ({ profile, item, key, personalData }) => {
 
       {!profile && (
         <div className="flex p-1">
-          <div className="w-[33%] justify-center flex gap-2 items-center border-r-1 border-gray-100 p-2 cursor-pointer hover:bg-gray-400">
-            <ThumbUpIcon sx={{ fontSize: 22, color: "blue" }} />{" "}
-            <span>Like</span>{" "}
+          <div
+            className="w-[33%] justify-center flex gap-2 items-center border-r-1 border-gray-100 p-2 cursor-pointer hover:bg-gray-400"
+            onClick={handleLikeFuction}
+          >
+            {liked ? (
+              <ThumbUpIcon sx={{ fontSize: 22, color: "blue" }} />
+            ) : (
+              <ThumbUpOffAltIcon sx={{ fontSize: 22, color: "blue" }} />
+            )}{" "}
+            <span>{liked ? "Liked" : "Like"}</span>{" "}
           </div>
           <div
             className="w-[33%] justify-center flex gap-2 items-center border-r-1 border-gray-100 p-2 cursor-pointer hover:bg-gray-400"
