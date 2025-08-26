@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../Card/card";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import CommentIcon from "@mui/icons-material/Comment";
 import SendIcon from "@mui/icons-material/Send";
+import axios from "axios";
 
 const Post = ({ profile, item, key, personalData }) => {
   const [seeMore, setSeeMore] = useState(false);
@@ -17,7 +18,31 @@ const Post = ({ profile, item, key, personalData }) => {
     e.preventDefault();
   };
 
-  const handleLikeFuction = () => {};
+  useEffect(() => {
+    let selfId = personalData?._id;
+    item?.likes?.map((item) => {
+      if (item.toString() === selfId.toString()) {
+        setLiked(true);
+        return;
+      }
+    });
+  }, []);
+
+  const handleLikeFuction = async () => {
+    await axios
+      .post(
+        "http://localhost:1478/api/post/likeDislike",
+        {
+          postId: item?._id,
+        },
+        { withCredentials: true }
+      )
+      .then((res) => {})
+      .catch((err) => {
+        console.log(err);
+        alert("An error occurred");
+      });
+  };
   return (
     <Card padding={0}>
       <div className="flex gap-3 p-4">
