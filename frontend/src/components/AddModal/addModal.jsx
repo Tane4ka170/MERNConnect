@@ -11,6 +11,22 @@ const AddModal = (props) => {
     if ((desc.trim().length === 0) & !imageUrl) {
       return toast.error("Kindly provide at least one field");
     }
+
+    await axios
+      .post(
+        "http://localhost:1478/api/post/",
+        {
+          desc: desc,
+          imageLink: imageUrl,
+        },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleUploadImage = async (e) => {
@@ -22,13 +38,14 @@ const AddModal = (props) => {
 
     try {
       const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/doo1ifq0i/image/upload/",
+        "https://api.cloudinary.com/v1_1/doo1ifq0i/image/upload",
         data
       );
-      const imageUrl = response.data.url;
+      const imageUrl = response.data.secure_url;
       setImageUrl(imageUrl);
     } catch (error) {
-      console.log(error);
+      console.error("Upload error:", error.response?.data || error.message);
+      toast.error("Failed to upload image");
     }
   };
   return (
@@ -48,7 +65,7 @@ const AddModal = (props) => {
         <textarea
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
-          cols={50}
+          cols={40}
           rows={10}
           placeholder="What's on your mind?"
           className="my-3 outline-0 text-xl p-2"
