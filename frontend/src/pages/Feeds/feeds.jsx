@@ -16,7 +16,7 @@ const Feeds = () => {
   const [addPostModel, setPostModal] = useState(false);
   const [personalData, setPersonalData] = useState(null);
   const [post, setPost] = useState([]);
-  const [loading, setLoading] = useState(true); // 👈 стейт для лоадера
+  const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     try {
@@ -33,7 +33,7 @@ const Feeds = () => {
       console.log(error);
       toast.error(error?.response?.data?.error || "Failed to load data");
     } finally {
-      setLoading(false); // 👈 коли все закінчилося, ховаємо лоадер
+      setLoading(false);
     }
   };
 
@@ -46,7 +46,7 @@ const Feeds = () => {
   };
 
   if (loading) {
-    return <Loader />; // 👈 показуємо тільки лоадер поки вантажиться
+    return <Loader />;
   }
 
   return (
