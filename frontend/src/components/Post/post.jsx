@@ -32,21 +32,25 @@ const Post = ({ profile, item, key, personalData }) => {
         </div>
       </div>
 
-      <div className="text-md p-4 my-3 whitespace-pre-line flex-grow">
-        {seeMore ? desc : `${desc.slice(0, 100)}...`}
-        {desc.length < 100 ? null : (
-          <span
-            className="cursor-pointer text-gray-700"
-            onClick={() => setSeeMore((prev) => !prev)}
-          >
-            {seeMore ? "Show Less" : "Show More"}
-          </span>
-        )}
-      </div>
+      {desc.length > 0 && (
+        <div className="text-md p-4 my-3 whitespace-pre-line flex-grow">
+          {seeMore ? desc : `${desc.slice(0, 100)}...`}
+          {desc.length < 50 ? null : (
+            <span
+              className="cursor-pointer text-gray-700"
+              onClick={() => setSeeMore((prev) => !prev)}
+            >
+              {seeMore ? "Show Less" : "Show More"}
+            </span>
+          )}
+        </div>
+      )}
 
-      <div className="w-[100%] h-[300px]">
-        <img src={item?.imageLink} alt="" className="w-full h-full" />
-      </div>
+      {item?.imageLink && (
+        <div className="w-[100%] h-[300px]">
+          <img src={item?.imageLink} alt="" className="w-full h-full" />
+        </div>
+      )}
 
       <div className="my-2 p-4 flex justify-between items-center">
         <div className="flex gap-1 items-center">
