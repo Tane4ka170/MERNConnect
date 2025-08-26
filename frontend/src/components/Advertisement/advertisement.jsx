@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "../Card/card";
 
 const Advertisement = () => {
+  const [userData, setUserData] = useState();
+
+  useEffect(() => {
+    let userData = localStorage.getItem("userInfo");
+    setUserData(userData ? JSON.parse(userData) : null);
+  }, []);
+
   return (
     <div className="sticky top-18">
       <Card padding={0}>
@@ -17,9 +24,7 @@ const Advertisement = () => {
 
           <div className="absolute top-14 left-[45%] z-10">
             <img
-              src={
-                "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
-              }
+              src={userData?.profile_pic}
               alt="User"
               className="rounded-4xl border-2 h-14 w-14 border-white cursor-pointer"
             />
@@ -27,7 +32,9 @@ const Advertisement = () => {
         </div>
 
         <div className="px-5 my-5 mx-auto">
-          <div className="text-sm font-semibold text-center">Virk</div>
+          <div className="text-sm font-semibold text-center">
+            {userData?.f_name}
+          </div>
           <div className="text-sm my-3 text-center">
             {" "}
             Stay updated with new job openings and industry trends
