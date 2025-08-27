@@ -8,15 +8,13 @@ import axios from "axios";
 
 const Post = ({ profile, item, key, personalData }) => {
   const [seeMore, setSeeMore] = useState(false);
-  const [comment, setComment] = useState(false);
+  const [showComments, setShowComments] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
   const [liked, setLiked] = useState(false);
   const [noOfLikes, setNoOfLikes] = useState(item?.likes.length);
 
   const desc = item?.desc;
-
-  const handleSendComment = (e) => {
-    e.preventDefault();
-  };
 
   useEffect(() => {
     let selfId = personalData?._id;
@@ -24,6 +22,8 @@ const Post = ({ profile, item, key, personalData }) => {
       if (item.toString() === selfId.toString()) {
         setLiked(true);
         return;
+      } else {
+        setLiked(false);
       }
     });
   }, []);
@@ -37,11 +37,54 @@ const Post = ({ profile, item, key, personalData }) => {
         },
         { withCredentials: true }
       )
-      .then((res) => {})
+      .then((res) => {
+        if (liked) {
+          setNoOfLikes((prev) => prev - 1);
+          setLiked(false);
+        } else {
+          setLiked(true);
+          setNoOfLikes((prev) => prev + 1);
+        }
+      })
       .catch((err) => {
         console.log(err);
         alert("An error occurred");
       });
+  };
+
+  const handleCommentBoxOpenClose = async () => {
+    setShowComments((prev) => !prev); // toggle
+    if (!showComments) {
+      try {
+        const res = await axios.get(
+          `http://localhost:1478/api/comment/${item?._id}`
+        );
+        setComments(res.data.comments || []);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
+  const handleSendComment = async (e) => {
+    e.preventDefault();
+    if (!newComment.trim()) return;
+
+    try {
+      const res = await axios.post(
+        "http://localhost:1478/api/comment",
+        {
+          postId: item?._id,
+          comment: newComment,
+        },
+        { withCredentials: true }
+      );
+      setComments((prev) => [...prev, res.data.comment]);
+      setNewComment("");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to add comment");
+    }
   };
   return (
     <Card padding={0}>
@@ -109,7 +152,7 @@ const Post = ({ profile, item, key, personalData }) => {
           </div>
           <div
             className="w-[33%] justify-center flex gap-2 items-center border-r-1 border-gray-100 p-2 cursor-pointer hover:bg-gray-400"
-            onClick={() => setComment(true)}
+            onClick={handleCommentBoxOpenClose}
           >
             <CommentIcon sx={{ fontSize: 22, color: "blue" }} />{" "}
             <span>Comment</span>{" "}
@@ -121,13 +164,11 @@ const Post = ({ profile, item, key, personalData }) => {
       )}
 
       {/* Comment section */}
-      {comment && (
+      {showComments && (
         <div className="p-4 w-full">
           <div className="flex gap-2 items-center">
             <img
-              src={
-                "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
-              }
+              src={personalData?.profile_pic}
               alt="User"
               className="rounded-full w-12 h-12 border-2 border-white cursor-pointer"
             />
@@ -137,6 +178,7 @@ const Post = ({ profile, item, key, personalData }) => {
                 type="text"
                 placeholder="Write a comment..."
                 className="w-full border-1 py-3 px-5 rounded-3xl hover:bg-gray-500"
+                onChange={(e) => setNewComment(e.target.value)}
               />
               <button
                 type="submit"
@@ -149,29 +191,27 @@ const Post = ({ profile, item, key, personalData }) => {
 
           {/* Other's comment section */}
           <div className="w-full p-4">
-            <div className="my-4">
-              <div className="flex gap-3">
-                <img
-                  src={
-                    "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
-                  }
-                  alt="User"
-                  className="rounded-full w-12 h-12 border-2 border-white cursor-pointer"
-                />
-                <div className="cursor-pointer">
-                  <div className="text-md">Jarwadi Siregar</div>
-                  <div className="text-sm text-gray-950">
-                    Engineering Manager
+            {comments?.map((item, index) => {
+              return (
+                <div className="my-4">
+                  <div className="flex gap-3">
+                    <img
+                      src={item?.user?.profile_pic}
+                      alt="User"
+                      className="rounded-full w-12 h-12 border-2 border-white cursor-pointer"
+                    />
+                    <div className="cursor-pointer">
+                      <div className="text-md">{item?.user?.f_name}</div>
+                      <div className="text-sm text-gray-950">
+                        {item?.user?.headline}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
 
-              <div className="px-11 my-2">
-                This is impressive, Jarwadi! 🚀 Thanks for sharing the results —
-                we’ve been thinking about containerizing our pipeline too, and
-                this just gave me the push I needed.
-              </div>
-            </div>
+                  <div className="px-11 my-2">{item?.comment}</div>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
