@@ -3,7 +3,7 @@ import Advertisement from "../../components/Advertisement/advertisement";
 import Card from "../../components/Card/card";
 import Post from "../../components/Post/post";
 import AddIcon from "@mui/icons-material/Add";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../../components/Modal/modal";
 import ImageModal from "../../components/ImageModal/imageModal";
 import EditInfoModal from "../../components/EditInfoModal/editInfoModal";
@@ -12,6 +12,7 @@ import ExpModal from "../../components/ExpModal/expModal";
 import MessageModal from "../../components/MessageModal/messageModal";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
 const Profile = () => {
   const { id } = useParams();
@@ -21,6 +22,28 @@ const Profile = () => {
   const [aboutModal, setAboutModal] = useState(false);
   const [expModal, setExpModal] = useState(false);
   const [messageModal, setMessageModal] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [postData, setPostData] = useState([]);
+  const [ownData, setOwnData] = useState(null);
+
+  useEffect(() => {
+    fetchDataOnLoad();
+  }, []);
+
+  const fetchDataOnLoad = async () => {
+    try {
+      const [userDatas, postDatas, ownDatas] = await Promise.all(
+        axios.get(`http://localhost:1478/api/auth/user/${id}`),
+        axios.get(`http://localhost:1478/api/post/getTop5Post/${id}`),
+        axios.get("http://localhost:1478/api/auth/self", {
+          withCredentials: true,
+        })
+      );
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred");
+    }
+  };
 
   const handleImageModalOpenClose = () => {
     setImageSetModal((prev) => !prev);
