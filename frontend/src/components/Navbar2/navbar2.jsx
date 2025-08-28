@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
 import WorkIcon from "@mui/icons-material/Work";
@@ -10,6 +10,12 @@ import { Link, useLocation } from "react-router-dom";
 const Navbar2 = () => {
   const [dropDown, setDropDown] = useState(false);
   const location = useLocation();
+  const [userData, setUserData] = useState();
+
+  useEffect(() => {
+    let userData = localStorage.getItem("userInfo");
+    setUserData(userData ? JSON.parse(userData) : null);
+  }, []);
 
   return (
     <div className="bg-white h-13 flex justify-between py-1 px-5 xl:px-50 fixed top-0 w-[100%] z-1000">
@@ -137,13 +143,11 @@ const Navbar2 = () => {
           </div>
         </Link>
         <Link
-          to={`/profile/fgfj`}
+          to={`/profile/${userData?._id}`}
           className="flex flex-col items-center cursor-pointer"
         >
           <img
-            src={
-              "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
-            }
+            src={userData?.profile_pic}
             alt="User icon-cp"
             className="w-8 h-8 rounded-full"
           />
