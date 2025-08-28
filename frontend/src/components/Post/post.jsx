@@ -103,10 +103,10 @@ const Post = ({ profile, item, key, personalData }) => {
         </div>
       </div>
 
-      {desc.length > 0 && (
+      {desc?.length > 0 && (
         <div className="text-md p-4 my-3 whitespace-pre-line flex-grow">
           {seeMore ? desc : `${desc.slice(0, 100)}...`}
-          {desc.length < 50 ? null : (
+          {desc?.length < 50 ? null : (
             <span
               className="cursor-pointer text-gray-700"
               onClick={() => setSeeMore((prev) => !prev)}
