@@ -37,7 +37,10 @@ const Profile = () => {
         axios.get(`http://localhost:1478/api/post/getTop5Post/${id}`),
         axios.get("http://localhost:1478/api/auth/self", {
           withCredentials: true,
-        })
+        }),
+        setUserData(userDatas.user.data),
+        setPostData(postDatas.data.posts),
+        setOwnData(ownDatas.data.user)
       );
     } catch (err) {
       console.error(err);
@@ -90,9 +93,7 @@ const Profile = () => {
                     <EditIcon />
                   </div>
                   <img
-                    src={
-                      "https://sb.kaleidousercontent.com/67418/1920x1100/ffa7b88ebb/transparent.png"
-                    }
+                    src={userData?.cover_pic}
                     alt=""
                     className="w-full h-[200px] rounded-tr-lg rounded-tl-lg"
                   />
@@ -101,9 +102,7 @@ const Profile = () => {
                     onClick={handleCircularImage}
                   >
                     <img
-                      src={
-                        "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
-                      }
+                      src={userData?.profile_pic}
                       alt="User"
                       className="rounded-full border-white border-2 cursor-pointer w-35 h-35"
                     />
@@ -118,15 +117,13 @@ const Profile = () => {
                     <EditIcon />
                   </div>
                   <div className="w-full">
-                    <div className="text-2xl">Qadim Virk</div>
-                    <div className="text-gray-950">
-                      I work as a Full-Stack Developer{" "}
-                    </div>
+                    <div className="text-2xl">{userData?.f_name}</div>
+                    <div className="text-gray-950">{userData?.headline}</div>
                     <div className="text-sm text-gray-400">
-                      Hinjawadi, India
+                      {userData?.curr_location}
                     </div>
                     <div className="text-md text-blue-600 w-fit cursor-pointer hover:underline">
-                      81 connections
+                      {userData?.friends?.length} connections
                     </div>
 
                     <div className="md:flex w-full justify-between">
@@ -168,16 +165,7 @@ const Profile = () => {
                 </div>
               </div>
               <div className="text-gray-800 text-md w-[80%]">
-                Passionate and results-driven Full-Stack Developer with over 5
-                years of experience building scalable web applications and
-                modern digital solutions. Skilled in JavaScript, React, Node.js,
-                and cloud technologies. At Issac and Sons, I focus on delivering
-                end-to-end software solutions that enhance performance, user
-                experience, and business growth. I'm always excited to
-                collaborate on innovative projects, solve complex problems, and
-                continuously improve my skills. Based in Hinjawadi — the heart
-                of India’s tech scene — I thrive in fast-paced environments
-                where creativity and code meet.
+                {userData?.about}
               </div>
             </Card>
           </div>
@@ -188,27 +176,16 @@ const Profile = () => {
                 <div className="text-xl">About</div>
               </div>
               <div className="text-gray-800 text-md my-2 w-full flex gap-4 flex-wrap">
-                <div className="py-2 px-3 cursor-pointer bg-blue-100 rounded-lg">
-                  Redux / Zustand / Context API
-                </div>
-                <div className="py-2 px-3 cursor-pointer bg-blue-100 rounded-lg">
-                  Postman
-                </div>
-                <div className="py-2 px-3 cursor-pointer bg-blue-100 rounded-lg">
-                  REST APIs & GraphQL
-                </div>
-                <div className="py-2 px-3 cursor-pointer bg-blue-100 rounded-lg">
-                  MongoDB / Mongoose
-                </div>
-                <div className="py-2 px-3 cursor-pointer bg-blue-100 rounded-lg">
-                  AWS / Azure / Vercel / Netlify
-                </div>
-                <div className="py-2 px-3 cursor-pointer bg-blue-100 rounded-lg">
-                  TypeScript
-                </div>
-                <div className="py-2 px-3 cursor-pointer bg-blue-100 rounded-lg">
-                  Git & GitHub
-                </div>
+                {userData?.skills?.map((item, index) => {
+                  return (
+                    <div
+                      className="py-2 px-3 cursor-pointer bg-blue-100 rounded-lg"
+                      key={index}
+                    >
+                      {item}
+                    </div>
+                  );
+                })}
               </div>
             </Card>
           </div>
@@ -224,24 +201,16 @@ const Profile = () => {
 
               {/* Parent div for scrollable activities */}
               <div className="overflow-x-auto my-2 flex gap-1 overflow-y-hidden w-full">
-                <Link
-                  to={`/profile/${id}/activities/58`}
-                  className="cursor-pointer shrink-0 w-[350px] h-[560px]"
-                >
-                  <Post profile={1} />
-                </Link>
-                <Link
-                  to={`/profile/${id}/activities/59`}
-                  className="cursor-pointer shrink-0 w-[350px] h-[560px]"
-                >
-                  <Post profile={1} />
-                </Link>
-                <Link
-                  to={`/profile/${id}/activities/60`}
-                  className="cursor-pointer shrink-0 w-[350px] h-[560px]"
-                >
-                  <Post profile={1} />
-                </Link>
+                {postData.map((item, ind) => {
+                  return (
+                    <Link
+                      to={`/profile/${id}/activities/${item?.id}`}
+                      className="cursor-pointer shrink-0 w-[350px] h-[560px]"
+                    >
+                      <Post profile={1} item={item} personalData={ownData} />
+                    </Link>
+                  );
+                })}
               </div>
 
               <div className="w-full flex justify-center items-center">
@@ -264,21 +233,25 @@ const Profile = () => {
                 </div>
               </div>
               <div className="mt-5">
-                <div className="p-2 border-t-1 border-gray-100 flex justify-between">
-                  <div>
-                    <div className="text-lg">Full-Stack Developer</div>
-                    <div className="text-sm">Issac and Sons</div>
-                    <div className="text-sm text-gray-900">
-                      Mar 2022 – Present
+                {userData?.experience?.map((item, index) => {
+                  return (
+                    <div className="p-2 border-t-1 border-gray-100 flex justify-between">
+                      <div>
+                        <div className="text-lg">{item?.designation}</div>
+                        <div className="text-sm">{item?.company_name}</div>
+                        <div className="text-sm text-gray-900">
+                          {item?.duration}
+                        </div>
+                        <div className="text-sm text-gray-900">
+                          {item?.location}
+                        </div>
+                      </div>
+                      <div className="cursor-pointer">
+                        <EditIcon />
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-900">
-                      Hinjawadi, India
-                    </div>
-                  </div>
-                  <div className="cursor-pointer">
-                    <EditIcon />
-                  </div>
-                </div>
+                  );
+                })}
               </div>
             </Card>
           </div>
