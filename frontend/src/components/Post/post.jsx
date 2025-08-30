@@ -5,6 +5,7 @@ import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import CommentIcon from "@mui/icons-material/Comment";
 import SendIcon from "@mui/icons-material/Send";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Post = ({ profile, item, key, personalData }) => {
   const [seeMore, setSeeMore] = useState(false);
@@ -89,13 +90,16 @@ const Post = ({ profile, item, key, personalData }) => {
   return (
     <Card padding={0}>
       <div className="flex gap-3 p-4">
-        <div className="w-12 h-12 rounded-4xl">
+        <Link
+          to={`/profile/${item?.user?._id}`}
+          className="w-12 h-12 rounded-4xl"
+        >
           <img
             src={item?.user?.profile_pic}
             alt="User"
             className="rounded-4xl w-12 h-12 border-2 border-white cursor-pointer"
           />
-        </div>
+        </Link>
 
         <div>
           <div className="text-lg font-semibold">{item?.user?.f_name}</div>
