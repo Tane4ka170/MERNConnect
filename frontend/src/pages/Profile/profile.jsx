@@ -284,7 +284,11 @@ const Profile = () => {
       </div>
       {imageSetModal && (
         <Modal closeModal={handleImageModalOpenClose} title="Add Image">
-          <ImageModal selfData={ownData} isCircular={circularImage} />
+          <ImageModal
+            handleEditFunction={handleEditFunction}
+            selfData={ownData}
+            isCircular={circularImage}
+          />
         </Modal>
       )}
 
