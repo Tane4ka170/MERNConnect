@@ -77,6 +77,24 @@ const Profile = () => {
   const handleMessageModal = () => {
     setMessageModal((prev) => !prev);
   };
+
+  const handleEditFunction = async (data) => {
+    await axios
+      .put(
+        "http://localhost:1478/api/auth/update",
+        { user: data },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("An error occurred");
+      });
+  };
   return (
     <div className="px-5 xl:px-50 py-9 flex flex-col gap-5 w-full mt-5 bg-gray-50 ">
       <div className="flex justify-between">
@@ -266,7 +284,7 @@ const Profile = () => {
       </div>
       {imageSetModal && (
         <Modal closeModal={handleImageModalOpenClose} title="Add Image">
-          <ImageModal isCircular={circularImage} />
+          <ImageModal selfData={ownData} isCircular={circularImage} />
         </Modal>
       )}
 
