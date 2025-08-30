@@ -3,7 +3,7 @@ import { useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 
-const ImageModal = ({ isCircular, selfData }) => {
+const ImageModal = ({ isCircular, selfData, handleEditFunction }) => {
   const [imgLink, setImgLink] = useState(
     isCircular ? selfData?.profile_pic : selfData?.cover_pic
   );
@@ -29,6 +29,16 @@ const ImageModal = ({ isCircular, selfData }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSubmitBtn = async () => {
+    let { data } = { ...ownData };
+    if (isCircular) {
+      data = { ...data, ["profile_pic"]: imgLink };
+    } else {
+      data = { ...data, ["cover_pic"]: imgLink };
+    }
+    handleEditFunction(data);
   };
   return (
     <div className="p-5 relative flex items-center flex-col h-full">
@@ -58,12 +68,18 @@ const ImageModal = ({ isCircular, selfData }) => {
         onChange={handleInputImage}
       />
 
-      <div className="absolute bottom-10 right-0 p-3 bg-blue-200 rounded-2xl cursor-pointer">
-        Send
-      </div>
-      <Box sx={{ display: "flex" }}>
-        <CircularProgress />
-      </Box>
+      {loading ? (
+        <Box sx={{ display: "flex" }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <div
+          className="absolute bottom-10 right-0 p-3 bg-blue-200 rounded-2xl cursor-pointer"
+          onClick={handleSubmitBtn}
+        >
+          Send
+        </div>
+      )}
     </div>
   );
 };
