@@ -30,7 +30,7 @@ const UserSchema = new mongoose.Schema(
     },
     profile_pic: {
       type: String,
-      default: "https://baches.co.uk/wp-content/uploads/young-user-icon.jpg",
+      default: "https://cdn-icons-png.flaticon.com/512/13976/13976496.png",
     },
     cover_pic: {
       type: String,
