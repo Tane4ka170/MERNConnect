@@ -28,20 +28,21 @@ const Profile = () => {
 
   useEffect(() => {
     fetchDataOnLoad();
-  }, []);
+  }, [id]);
 
   const fetchDataOnLoad = async () => {
     try {
-      const [userDatas, postDatas, ownDatas] = await Promise.all(
+      const [userRes, postRes, ownRes] = await Promise.all([
         axios.get(`http://localhost:1478/api/auth/user/${id}`),
         axios.get(`http://localhost:1478/api/post/getTop5Post/${id}`),
         axios.get("http://localhost:1478/api/auth/self", {
           withCredentials: true,
         }),
-        setUserData(userDatas.user.data),
-        setPostData(postDatas.data.posts),
-        setOwnData(ownDatas.data.user)
-      );
+      ]);
+
+      setUserData(userRes.data.user);
+      setPostData(postRes.data.posts);
+      setOwnData(ownRes.data.user);
     } catch (err) {
       console.error(err);
       alert("An error occurred");
@@ -79,22 +80,19 @@ const Profile = () => {
   };
 
   const handleEditFunction = async (data) => {
-    await axios
-      .put(
+    try {
+      await axios.put(
         "http://localhost:1478/api/auth/update",
         { user: data },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((res) => {
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.log(err);
-        alert("An error occurred");
-      });
+        { withCredentials: true }
+      );
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+      alert("An error occurred");
+    }
   };
+
   return (
     <div className="px-5 xl:px-50 py-9 flex flex-col gap-5 w-full mt-5 bg-gray-50 ">
       <div className="flex justify-between">
@@ -191,19 +189,17 @@ const Profile = () => {
           <div className="mt-5">
             <Card padding={1}>
               <div className="flex justify-between items-center">
-                <div className="text-xl">About</div>
+                <div className="text-xl">Skills</div>
               </div>
               <div className="text-gray-800 text-md my-2 w-full flex gap-4 flex-wrap">
-                {userData?.skills?.map((item, index) => {
-                  return (
-                    <div
-                      className="py-2 px-3 cursor-pointer bg-blue-100 rounded-lg"
-                      key={index}
-                    >
-                      {item}
-                    </div>
-                  );
-                })}
+                {userData?.skills?.map((item, index) => (
+                  <div
+                    className="py-2 px-3 cursor-pointer bg-blue-100 rounded-lg"
+                    key={index}
+                  >
+                    {item}
+                  </div>
+                ))}
               </div>
             </Card>
           </div>
@@ -219,16 +215,15 @@ const Profile = () => {
 
               {/* Parent div for scrollable activities */}
               <div className="overflow-x-auto my-2 flex gap-1 overflow-y-hidden w-full">
-                {postData.map((item, ind) => {
-                  return (
-                    <Link
-                      to={`/profile/${id}/activities/${item?.id}`}
-                      className="cursor-pointer shrink-0 w-[350px] h-[560px]"
-                    >
-                      <Post profile={1} item={item} personalData={ownData} />
-                    </Link>
-                  );
-                })}
+                {postData.map((item, ind) => (
+                  <Link
+                    to={`/profile/${id}/activities/${item?.id}`}
+                    key={ind}
+                    className="cursor-pointer shrink-0 w-[350px] h-[560px]"
+                  >
+                    <Post profile={1} item={item} personalData={ownData} />
+                  </Link>
+                ))}
               </div>
 
               <div className="w-full flex justify-center items-center">
@@ -251,25 +246,26 @@ const Profile = () => {
                 </div>
               </div>
               <div className="mt-5">
-                {userData?.experience?.map((item, index) => {
-                  return (
-                    <div className="p-2 border-t-1 border-gray-100 flex justify-between">
-                      <div>
-                        <div className="text-lg">{item?.designation}</div>
-                        <div className="text-sm">{item?.company_name}</div>
-                        <div className="text-sm text-gray-900">
-                          {item?.duration}
-                        </div>
-                        <div className="text-sm text-gray-900">
-                          {item?.location}
-                        </div>
+                {userData?.experience?.map((item, index) => (
+                  <div
+                    key={index}
+                    className="p-2 border-t-1 border-gray-100 flex justify-between"
+                  >
+                    <div>
+                      <div className="text-lg">{item?.designation}</div>
+                      <div className="text-sm">{item?.company_name}</div>
+                      <div className="text-sm text-gray-900">
+                        {item?.duration}
                       </div>
-                      <div className="cursor-pointer">
-                        <EditIcon />
+                      <div className="text-sm text-gray-900">
+                        {item?.location}
                       </div>
                     </div>
-                  );
-                })}
+                    <div className="cursor-pointer">
+                      <EditIcon />
+                    </div>
+                  </div>
+                ))}
               </div>
             </Card>
           </div>
@@ -282,6 +278,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
       {imageSetModal && (
         <Modal closeModal={handleImageModalOpenClose} title="Add Image">
           <ImageModal
@@ -294,13 +291,19 @@ const Profile = () => {
 
       {infoModal && (
         <Modal title="Modify Details" closeModal={handleInfoModal}>
-          <EditInfoModal />
+          <EditInfoModal
+            handleEditFunction={handleEditFunction}
+            selfData={ownData}
+          />
         </Modal>
       )}
 
       {aboutModal && (
         <Modal title="Update Bio" closeModal={handleAboutModal}>
-          <AboutModal />
+          <AboutModal
+            handleEditFunction={handleEditFunction}
+            selfData={ownData}
+          />
         </Modal>
       )}
 
