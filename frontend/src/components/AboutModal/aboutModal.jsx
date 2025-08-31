@@ -1,6 +1,15 @@
-import React from "react";
+import { useState } from "react";
 
-const AboutModal = () => {
+const AboutModal = ({ handleEditFunction, selfData }) => {
+  const [data, setData] = useState({
+    about: selfData?.about,
+    skillInp: selfData?.skills?.join(","),
+    resume: selfData?.resume,
+  });
+
+  const onChangeHandle = (event, key) => {
+    setData({ ...data, [key]: event.target.value });
+  };
   return (
     <div className="my-8">
       <div className="w-full mb-4">
@@ -10,6 +19,8 @@ const AboutModal = () => {
           cols={10}
           rows={3}
           className="p-2 mt-1 w-full border-1 rounded-md"
+          value={data.about}
+          onChange={(event) => onChangeHandle(event, "about")}
         ></textarea>
       </div>
 
@@ -20,6 +31,8 @@ const AboutModal = () => {
           cols={10}
           rows={3}
           className="p-2 mt-1 w-full border-1 rounded-md"
+          value={data.skillInp}
+          onChange={(event) => onChangeHandle(event, "skillInp")}
         ></textarea>
       </div>
 
