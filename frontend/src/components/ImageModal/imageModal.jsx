@@ -32,7 +32,7 @@ const ImageModal = ({ isCircular, selfData, handleEditFunction }) => {
   };
 
   const handleSubmitBtn = async () => {
-    let { data } = { ...ownData };
+    let { data } = { ...selfData };
     if (isCircular) {
       data = { ...data, ["profile_pic"]: imgLink };
     } else {
