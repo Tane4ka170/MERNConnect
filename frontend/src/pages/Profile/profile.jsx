@@ -309,7 +309,10 @@ const Profile = () => {
 
       {expModal && (
         <Modal title="Experience" closeModal={handleExpModal}>
-          <ExpModal />
+          <ExpModal
+            handleEditFunction={handleEditFunction}
+            selfData={ownData}
+          />
         </Modal>
       )}
 
