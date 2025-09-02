@@ -25,6 +25,11 @@ const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [postData, setPostData] = useState([]);
   const [ownData, setOwnData] = useState(null);
+  const [updateExp, setUpdateExp] = useState({
+    clicked: "",
+    id: "",
+    datas: {},
+  });
 
   useEffect(() => {
     fetchDataOnLoad();
@@ -72,6 +77,9 @@ const Profile = () => {
   };
 
   const handleExpModal = () => {
+    if (expModal) {
+      setUpdateExp({ clicked: "", id: "", datas: {} });
+    }
     setExpModal((prev) => !prev);
   };
 
@@ -91,6 +99,11 @@ const Profile = () => {
       console.log(err);
       alert("An error occurred");
     }
+  };
+
+  const updateExpEdit = (id, data) => {
+    setUpdateExp({ ...updateExp, clicked: true, id: id, data: data });
+    setExpModal((prev) => !prev);
   };
 
   return (
@@ -261,7 +274,12 @@ const Profile = () => {
                         {item?.location}
                       </div>
                     </div>
-                    <div className="cursor-pointer">
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => {
+                        updateExpEdit(item._id);
+                      }}
+                    >
                       <EditIcon />
                     </div>
                   </div>
@@ -312,6 +330,8 @@ const Profile = () => {
           <ExpModal
             handleEditFunction={handleEditFunction}
             selfData={ownData}
+            updateExp={updateExp}
+            setUpdateExp={updateExpEdit}
           />
         </Modal>
       )}
