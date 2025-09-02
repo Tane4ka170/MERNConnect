@@ -32,6 +32,14 @@ const ExpModal = ({
     let newData = { ...selfData, experience: expArr };
     handleEditFunction(newData);
   };
+
+  const handleOnDelete = () => {
+    let newFilteredData = selfData?.experience?.filter(
+      (item) => item._id !== updateExp?.data?._id
+    );
+    let newData = { ...selfData, experience: newFilteredData };
+    handleEditFunction(newData);
+  };
   return (
     <div className="mt-8 w-full h-[350px] overflow-auto">
       <div className="w-full mb-4">
@@ -88,12 +96,14 @@ const ExpModal = ({
         >
           Save
         </div>
-        <div
-          className="bg-blue-900 text-white w-fit py-1 px-3 cursor-pointer rounded-2xl"
-          onClick={handleOnSave}
-        >
-          Save
-        </div>
+        {updateExp?.clicked && (
+          <div
+            className="bg-blue-900 text-white w-fit py-1 px-3 cursor-pointer rounded-2xl"
+            onClick={handleOnDelete}
+          >
+            Delete
+          </div>
+        )}
       </div>
     </div>
   );
