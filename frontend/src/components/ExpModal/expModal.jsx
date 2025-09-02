@@ -1,18 +1,33 @@
 import { useState } from "react";
 
-const ExpModal = ({ handleEditFunction, selfData }) => {
+const ExpModal = ({
+  handleEditFunction,
+  selfData,
+  updateExp,
+  setUpdateExp,
+}) => {
   const [data, setData] = useState({
-    designation: "",
-    company_name: "",
-    duration: "",
-    location: "",
+    designation: updateExp?.clicked ? updateExp?.data?.designation : "",
+    company_name: updateExp?.clicked ? updateExp?.data?.company_name : "",
+    duration: updateExp?.clicked ? updateExp?.data?.duration : "",
+    location: updateExp?.clicked ? updateExp?.data?.location : "",
   });
 
   const onChangeHandle = (event, key) => {
     setData({ ...data, [key]: event.target.value });
   };
 
+  const updateExpSave = () => {
+    let newFilteredData = selfData?.experience?.filter(
+      (item) => item._id !== updateExp?.data?._id
+    );
+    let newArr = [...newFilteredData, data];
+    let newData = { ...selfData, experience: newArr };
+    handleEditFunction(newData);
+  };
+
   const handleOnSave = async () => {
+    if (updateExp?.clicked) return updateExpSave();
     let expArr = [...selfData?.experience, data];
     let newData = { ...selfData, experience: expArr };
     handleEditFunction(newData);
@@ -66,11 +81,19 @@ const ExpModal = ({ handleEditFunction, selfData }) => {
           onChange={(event) => onChangeHandle(event, "location")}
         />
       </div>
-      <div
-        className="bg-blue-900 text-white w-fit py-1 px-3 cursor-pointer rounded-2xl"
-        onClick={handleOnSave}
-      >
-        Save
+      <div className="flex justify-between">
+        <div
+          className="bg-blue-900 text-white w-fit py-1 px-3 cursor-pointer rounded-2xl"
+          onClick={handleOnSave}
+        >
+          Save
+        </div>
+        <div
+          className="bg-blue-900 text-white w-fit py-1 px-3 cursor-pointer rounded-2xl"
+          onClick={handleOnSave}
+        >
+          Save
+        </div>
       </div>
     </div>
   );
