@@ -1,18 +1,22 @@
+import { useEffect, useState } from "react";
+
+import axios from "axios";
+import { Link, useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+
+import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
-import Advertisement from "../../components/Advertisement/advertisement";
+import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
+
 import Card from "../../components/Card/card";
 import Post from "../../components/Post/post";
-import AddIcon from "@mui/icons-material/Add";
-import { useEffect, useState } from "react";
 import Modal from "../../components/Modal/modal";
-import ImageModal from "../../components/ImageModal/imageModal";
-import EditInfoModal from "../../components/EditInfoModal/editInfoModal";
-import AboutModal from "../../components/AboutModal/aboutModal";
 import ExpModal from "../../components/ExpModal/expModal";
+import ImageModal from "../../components/ImageModal/imageModal";
+import AboutModal from "../../components/AboutModal/aboutModal";
 import MessageModal from "../../components/MessageModal/messageModal";
-import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-import { Link, useParams } from "react-router-dom";
-import axios from "axios";
+import Advertisement from "../../components/Advertisement/advertisement";
+import EditInfoModal from "../../components/EditInfoModal/editInfoModal";
 
 const Profile = () => {
   const { id } = useParams();
@@ -142,15 +146,59 @@ const Profile = () => {
   const handleSendFriendRequest = async () => {
     if (checkFriendStatus() === "Pending...") return;
     if (checkFriendStatus() === "Add Connection") {
-      await axios.post(
-        "http://localhost:1478/api/auth/sendFriendReq",
-        {
-          receiver: userData?._id,
-        },
-        {
-          withCredentials: true,
-        }
-      );
+      await axios
+        .post(
+          "http://localhost:1478/api/auth/sendFriendReq",
+          {
+            receiver: userData?._id,
+          },
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          toast.success(res.data.message);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err?.response?.data?.error);
+        });
+    } else if (checkFriendStatus() === "Accept Request") {
+      await axios
+        .post(
+          "http://localhost:1478/api/auth/acceptFriendRequest",
+          { friendId: userData?._id },
+          { withCredentials: true }
+        )
+        .then((res) => {
+          toast.success(res.data.message);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err?.response?.data?.error);
+        });
+    } else {
+      await axios
+        .delete(
+          `http://localhost:1478/api/auth/removeFromFriendList/${userData?._id}`,
+          { withCredentials: true }
+        )
+        .then((res) => {
+          toast.success(res.data.message);
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err?.response?.data?.error);
+        });
     }
   };
   return (
@@ -407,6 +455,7 @@ const Profile = () => {
           <MessageModal />
         </Modal>
       )}
+      <ToastContainer />
     </div>
   );
 };
