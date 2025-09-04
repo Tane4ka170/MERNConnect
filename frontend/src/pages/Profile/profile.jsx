@@ -106,6 +106,53 @@ const Profile = () => {
     setExpModal((prev) => !prev);
   };
 
+  const amIFriend = () => {
+    let arr = userData?.friends?.filter((item) => {
+      return item === ownData?._id;
+    });
+    return arr.length;
+  };
+
+  const isInPendingList = () => {
+    let arr = userData?.pending_friends?.filter((item) => {
+      return item === ownData?._id;
+    });
+    return arr.length;
+  };
+
+  const isInSelfPendingList = () => {
+    let arr = ownData?.pending_friends?.filter((item) => {
+      return item === userData?._id;
+    });
+    return arr.length;
+  };
+
+  const checkFriendStatus = () => {
+    if (amIFriend()) {
+      return "Remove Connection";
+    } else if (isInSelfPendingList()) {
+      return "Accept Request";
+    } else if (isInPendingList()) {
+      return "Pending...";
+    } else {
+      return "Add Connection";
+    }
+  };
+
+  const handleSendFriendRequest = async () => {
+    if (checkFriendStatus() === "Pending...") return;
+    if (checkFriendStatus() === "Add Connection") {
+      await axios.post(
+        "http://localhost:1478/api/auth/sendFriendReq",
+        {
+          receiver: userData?._id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+    }
+  };
   return (
     <div className="px-5 xl:px-50 py-9 flex flex-col gap-5 w-full mt-5 bg-gray-50 ">
       <div className="flex justify-between">
@@ -115,12 +162,15 @@ const Profile = () => {
             <Card padding={0}>
               <div className="w-full h-fit">
                 <div className="relative w-full h-[200px]">
-                  <div
-                    className="absolute cursor-pointer top-3 right-3 z-20 w-[35px] flex justify-center items-center h-[35px] rounded-full p-3 bg-white"
-                    onClick={handleOnEditCover}
-                  >
-                    <EditIcon />
-                  </div>
+                  {userData?._id === ownData?._id && (
+                    <div
+                      className="absolute cursor-pointer top-3 right-3 z-20 w-[35px] flex justify-center items-center h-[35px] rounded-full p-3 bg-white"
+                      onClick={handleOnEditCover}
+                    >
+                      <EditIcon />
+                    </div>
+                  )}
+
                   <img
                     src={userData?.cover_pic}
                     alt=""
@@ -139,12 +189,15 @@ const Profile = () => {
                 </div>
 
                 <div className="mt-10 relative px-8 py-2">
-                  <div
-                    className="absolute cursor-pointer top-3 right-3 z-20 w-[35px] flex justify-center items-center h-[35px] rounded-full p-3 bg-white"
-                    onClick={handleInfoModal}
-                  >
-                    <EditIcon />
-                  </div>
+                  {userData?._id === ownData?._id && (
+                    <div
+                      className="absolute cursor-pointer top-3 right-3 z-20 w-[35px] flex justify-center items-center h-[35px] rounded-full p-3 bg-white"
+                      onClick={handleInfoModal}
+                    >
+                      <EditIcon />
+                    </div>
+                  )}
+
                   <div className="w-full">
                     <div className="text-2xl">{userData?.f_name}</div>
                     <div className="text-gray-950">{userData?.headline}</div>
@@ -163,20 +216,29 @@ const Profile = () => {
                         <div className="cursor-pointer p-2 border-1 rounded-lg bg-blue-600 text-white font-semibold">
                           Share
                         </div>
-                        <div className="cursor-pointer p-2 border-1 rounded-lg bg-blue-600 text-white font-semibold">
-                          Sign out
-                        </div>
+                        {userData?._id === ownData?._id && (
+                          <div className="cursor-pointer p-2 border-1 rounded-lg bg-blue-600 text-white font-semibold">
+                            Sign out
+                          </div>
+                        )}
                       </div>
                       <div className="my-5 flex gap-5">
-                        <div
-                          className="cursor-pointer p-2 border-1 rounded-lg bg-blue-600 text-white font-semibold"
-                          onClick={handleMessageModal}
-                        >
-                          Send a note
-                        </div>
-                        <div className="cursor-pointer p-2 border-1 rounded-lg bg-blue-600 text-white font-semibold">
-                          Add connection
-                        </div>
+                        {amIFriend() ? (
+                          <div
+                            className="cursor-pointer p-2 border-1 rounded-lg bg-blue-600 text-white font-semibold"
+                            onClick={handleMessageModal}
+                          >
+                            Send a note
+                          </div>
+                        ) : null}
+                        {userData?._id === ownData?._id ? null : (
+                          <div
+                            className="cursor-pointer p-2 border-1 rounded-lg bg-blue-600 text-white font-semibold"
+                            onClick={handleSendFriendRequest}
+                          >
+                            {checkFriendStatus()}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -189,9 +251,11 @@ const Profile = () => {
             <Card padding={1}>
               <div className="flex justify-between items-center">
                 <div className="text-xl">About</div>
-                <div className="cursor-pointer" onClick={handleAboutModal}>
-                  <EditIcon />
-                </div>
+                {userData?._id === ownData?._id && (
+                  <div className="cursor-pointer" onClick={handleAboutModal}>
+                    <EditIcon />
+                  </div>
+                )}
               </div>
               <div className="text-gray-800 text-md w-[80%]">
                 {userData?.about}
@@ -274,14 +338,16 @@ const Profile = () => {
                         {item?.location}
                       </div>
                     </div>
-                    <div
-                      className="cursor-pointer"
-                      onClick={() => {
-                        updateExpEdit(item._id);
-                      }}
-                    >
-                      <EditIcon />
-                    </div>
+                    {userData?._id === ownData?._id && (
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => {
+                          updateExpEdit(item._id);
+                        }}
+                      >
+                        <EditIcon />
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
