@@ -6,11 +6,48 @@ import MessageIcon from "@mui/icons-material/Message";
 import AddAlertIcon from "@mui/icons-material/AddAlert";
 import "./navbar2.css";
 import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const Navbar2 = () => {
   const [dropDown, setDropDown] = useState(false);
   const location = useLocation();
   const [userData, setUserData] = useState();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedTerm, setDebouncedTerm] = useState("");
+  const [searchUser, setSearchUser] = useState([]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedTerm(searchTerm);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchTerm]);
+
+  useEffect(() => {
+    if (debouncedTerm) {
+      searchAPICall();
+    }
+  }, []);
+
+  const searchAPICall = async () => {
+    await axios
+      .get(`http://localhost:1478/api/auth/findUser?query=${debouncedTerm}`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (res.data.users.length) {
+          setDropDown(true);
+        }
+        setSearchUser(res.data.users);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err?.response?.data?.error);
+      });
+  };
 
   useEffect(() => {
     let userData = localStorage.getItem("userInfo");
@@ -33,23 +70,29 @@ const Navbar2 = () => {
             type="text"
             className="searchInput w-70 bg-gray-50"
             placeholder="Search"
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+            }}
           />
 
-          {dropDown && (
+          {searchUser.length > 0 && debouncedTerm.length !== 0 && (
             <div className="absolute w-88 left-0 bg-gray-400">
-              <div className="flex gap-2 items-center border-b-1 mb-1 cursor-pointer">
-                <div>
-                  <img
-                    src={
-                      "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"
-                    }
-                    alt=""
-                    className="w-10 h-10 rounded-full"
-                  />
-                </div>
+              {searchUser.map((item, index) => {
+                return (
+                  <div className="flex gap-2 items-center border-b-1 mb-1 cursor-pointer">
+                    <div>
+                      <img
+                        src={item?.profile_pic}
+                        alt=""
+                        className="w-10 h-10 rounded-full"
+                      />
+                    </div>
 
-                <div>Virk</div>
-              </div>
+                    <div>{item?.f_name}</div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
