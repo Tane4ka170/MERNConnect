@@ -9,6 +9,7 @@ import CommentIcon from "@mui/icons-material/Comment";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 
 import Card from "../Card/card";
+import { toast, ToastContainer } from "react-toastify";
 
 const Post = ({ profile, item, key, personalData }) => {
   const [seeMore, setSeeMore] = useState(false);
@@ -93,8 +94,12 @@ const Post = ({ profile, item, key, personalData }) => {
 
   const copyToClipboard = async (postId) => {
     try {
-      let string = `http://localhost:5173/profile/${item?.user?._id}/activity/${postId}`;
-    } catch (error) {}
+      let string = `http://localhost:5173/profile/${item?.user?._id}/activity/${item?._id}`;
+      await navigator.clipboard.writeText(string);
+      toast.success("Saved to clipboard");
+    } catch (error) {
+      console.error("Unable to copy!", error);
+    }
   };
   return (
     <Card padding={0}>
@@ -234,6 +239,7 @@ const Post = ({ profile, item, key, personalData }) => {
           </div>
         </div>
       )}
+      <ToastContainer />
     </Card>
   );
 };
