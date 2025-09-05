@@ -351,14 +351,16 @@ const Profile = () => {
                 ))}
               </div>
 
-              <div className="w-full flex justify-center items-center">
-                <Link
-                  to={`/profile/${id}/activities`}
-                  className="p-2 rounded-xl cursor-pointer hover:bg-gray-400 hover:text-white"
-                >
-                  View All Posts <ArrowCircleRightIcon />
-                </Link>
-              </div>
+              {postData.length > 5 && (
+                <div className="w-full flex justify-center items-center">
+                  <Link
+                    to={`/profile/${id}/activities`}
+                    className="p-2 rounded-xl cursor-pointer hover:bg-gray-400 hover:text-white"
+                  >
+                    View All Posts <ArrowCircleRightIcon />
+                  </Link>
+                </div>
+              )}
             </Card>
           </div>
 
