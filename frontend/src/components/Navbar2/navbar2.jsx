@@ -80,7 +80,12 @@ const Navbar2 = () => {
             <div className="absolute w-88 left-0 bg-gray-400">
               {searchUser.map((item, index) => {
                 return (
-                  <div className="flex gap-2 items-center border-b-1 mb-1 cursor-pointer">
+                  <Link
+                    to={`/profile/${item?._id}`}
+                    key={index}
+                    className="flex gap-2 items-center border-b-1 mb-1 cursor-pointer"
+                    onClick={() => setDebouncedTerm("")}
+                  >
                     <div>
                       <img
                         src={item?.profile_pic}
@@ -90,7 +95,7 @@ const Navbar2 = () => {
                     </div>
 
                     <div>{item?.f_name}</div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
