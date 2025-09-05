@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import Card from "../Card/card";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import CommentIcon from "@mui/icons-material/Comment";
-import SendIcon from "@mui/icons-material/Send";
+
 import axios from "axios";
 import { Link } from "react-router-dom";
+
+import SendIcon from "@mui/icons-material/Send";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import CommentIcon from "@mui/icons-material/Comment";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+
+import Card from "../Card/card";
 
 const Post = ({ profile, item, key, personalData }) => {
   const [seeMore, setSeeMore] = useState(false);
@@ -87,6 +90,12 @@ const Post = ({ profile, item, key, personalData }) => {
       alert("Failed to add comment");
     }
   };
+
+  const copyToClipboard = async (postId) => {
+    try {
+      let string = `http://localhost:5173/profile/${item?.user?._id}/activity/${postId}`;
+    } catch (error) {}
+  };
   return (
     <Card padding={0}>
       <div className="flex gap-3 p-4">
@@ -161,7 +170,10 @@ const Post = ({ profile, item, key, personalData }) => {
             <CommentIcon sx={{ fontSize: 22, color: "blue" }} />{" "}
             <span>Comment</span>{" "}
           </div>
-          <div className="w-[33%] justify-center flex gap-2 items-center border-r-1 border-gray-100 p-2 cursor-pointer hover:bg-gray-400">
+          <div
+            className="w-[33%] justify-center flex gap-2 items-center border-r-1 border-gray-100 p-2 cursor-pointer hover:bg-gray-400"
+            onClick={copyToClipboard}
+          >
             <SendIcon sx={{ fontSize: 22, color: "blue" }} /> <span>Share</span>{" "}
           </div>
         </div>
