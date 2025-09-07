@@ -15,6 +15,7 @@ const Navbar2 = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedTerm, setDebouncedTerm] = useState("");
   const [searchUser, setSearchUser] = useState([]);
+  const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -49,9 +50,26 @@ const Navbar2 = () => {
       });
   };
 
+  const fetchNotification = async () => {
+    await axios
+      .get("http://localhost:1478/api/notification/activeNotification", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        var count = res.data.count;
+        setNotificationCount(count);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err?.response?.data?.error);
+      });
+  };
+
   useEffect(() => {
     let userData = localStorage.getItem("userInfo");
     setUserData(userData ? JSON.parse(userData) : null);
+
+    fetchNotification();
   }, []);
 
   return (
@@ -177,9 +195,11 @@ const Navbar2 = () => {
                   location.pathname === "/notifications" ? "black" : "gray",
               }}
             />
-            <span className="absolute -top-2 -right-3 p-1 rounded-full text-xs bg-red-600 text-white">
-              1
-            </span>
+            {notificationCount > 0 && (
+              <span className="absolute -top-2 -right-3 p-1 rounded-full text-xs bg-red-600 text-white">
+                {notificationCount}
+              </span>
+            )}
           </div>
 
           <div
