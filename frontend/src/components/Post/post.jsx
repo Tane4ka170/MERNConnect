@@ -92,7 +92,7 @@ const Post = ({ profile, item, key, personalData }) => {
     }
   };
 
-  const copyToClipboard = async (postId) => {
+  const copyToClipboard = async () => {
     try {
       let string = `http://localhost:5173/profile/${item?.user?._id}/activity/${item?._id}`;
       await navigator.clipboard.writeText(string);
