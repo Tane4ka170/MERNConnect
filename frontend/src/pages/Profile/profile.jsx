@@ -201,6 +201,33 @@ const Profile = () => {
         });
     }
   };
+
+  const handleLogout = async () => {
+    await axios
+      .post(
+        "http://localhost:1478/api/auth/logout",
+        {},
+        { withCredentials: true }
+      )
+      .then((res) => {
+        localStorage.clear();
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err?.response?.data?.error);
+      });
+  };
+
+  const copyToClipboard = async () => {
+    try {
+      let string = `http://localhost:5173/profile/${id}`;
+      await navigator.clipboard.writeText(string);
+      toast.success("Saved to clipboard");
+    } catch (error) {
+      console.error("Unable to copy!", error);
+    }
+  };
   return (
     <div className="px-5 xl:px-50 py-9 flex flex-col gap-5 w-full mt-5 bg-gray-50 ">
       <div className="flex justify-between">
@@ -261,11 +288,17 @@ const Profile = () => {
                         <div className="cursor-pointer p-2 border-1 rounded-lg bg-blue-600 text-white font-semibold">
                           Available for
                         </div>
-                        <div className="cursor-pointer p-2 border-1 rounded-lg bg-blue-600 text-white font-semibold">
+                        <div
+                          className="cursor-pointer p-2 border-1 rounded-lg bg-blue-600 text-white font-semibold"
+                          onClick={copyToClipboard}
+                        >
                           Share
                         </div>
                         {userData?._id === ownData?._id && (
-                          <div className="cursor-pointer p-2 border-1 rounded-lg bg-blue-600 text-white font-semibold">
+                          <div
+                            className="cursor-pointer p-2 border-1 rounded-lg bg-blue-600 text-white font-semibold"
+                            onClick={handleLogout}
+                          >
                             Sign out
                           </div>
                         )}
@@ -454,7 +487,7 @@ const Profile = () => {
 
       {messageModal && (
         <Modal title="Send" closeModal={handleMessageModal}>
-          <MessageModal />
+          <MessageModal selfData={ownData} userData={userData} />
         </Modal>
       )}
       <ToastContainer />
