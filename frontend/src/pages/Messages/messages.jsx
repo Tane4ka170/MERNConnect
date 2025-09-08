@@ -1,11 +1,38 @@
-import Card from "../../components/Card/card";
-import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
-import Conversation from "../../components/Conversation/conversation";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { useEffect, useState } from "react";
+
+import axios from "axios";
+
 import ImageIcon from "@mui/icons-material/Image";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
+
+import Card from "../../components/Card/card";
+import Conversation from "../../components/Conversation/conversation";
 import Advertisement from "../../components/Advertisement/advertisement";
 
 const Messages = () => {
+  const [conversations, setConversations] = useState([]);
+  const [ownData, setOwnData] = useState();
+
+  useEffect(() => {
+    let userData = localStorage.getItem("userInfo");
+    setOwnData(userData ? JSON.parse(userData) : null);
+    fetchConversationOnLoad();
+  }, []);
+
+  const fetchConversationOnLoad = async () => {
+    await axios
+      .get("http://localhost:1478/api/conversation/get-conversation", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        setConversations(res.data.conversations);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("An error occurred");
+      });
+  };
   return (
     <div className="px-5 xl:px-50 py-9 flex gap-5 w-full mt-5 bg-gray-300">
       <div className="w-full justify-between flex pt-5">
@@ -26,7 +53,11 @@ const Messages = () => {
             <div className="w-full md:flex">
               <div className="h-[590px] overflow-auto w-full md:w-[40%] border-r-1 border-gray-500">
                 {/* For each chat */}
-                <Conversation />
+                {conversations.map((item, index) => {
+                  return (
+                    <Conversation item={item} key={index} ownData={ownData} />
+                  );
+                })}
               </div>
 
               <div className="w-full md:w-[60%] border-gray-400">
