@@ -1,8 +1,9 @@
-import React from "react";
-
-const Conversation = () => {
+const Conversation = (item, key) => {
   return (
-    <div className="flex items-center w-full cursor-pointer border-b-1 border-gray-400 gap-3 p-4 hover:bg-gray-600 hover:text-white">
+    <div
+      className="flex items-center w-full cursor-pointer border-b-1 border-gray-400 gap-3 p-4 hover:bg-gray-600 hover:text-white"
+      key={key}
+    >
       <div className="shrink-0">
         <img
           src={
