@@ -12,7 +12,9 @@ import Advertisement from "../../components/Advertisement/advertisement";
 
 const Messages = () => {
   const [conversations, setConversations] = useState([]);
-  const [ownData, setOwnData] = useState();
+  const [ownData, setOwnData] = useState(null);
+  const [activeConvId, setActiveConvId] = useState(null);
+  const [selectedConvDetails, setSelectedConvDetails] = useState(null);
 
   useEffect(() => {
     let userData = localStorage.getItem("userInfo");
