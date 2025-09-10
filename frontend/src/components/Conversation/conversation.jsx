@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const Conversation = (item, key, ownData) => {
+const Conversation = (item, key, ownData, handleSelectedConv, activeConvId) => {
   const [memberData, setMemberData] = useState(null);
 
   useEffect(() => {
@@ -9,10 +9,16 @@ const Conversation = (item, key, ownData) => {
     setMemberData(arr[0]);
   }, []);
 
+  const handleClickFunc = async () => {
+    handleSelectedConv(item?._id, memberData);
+  };
   return (
     <div
-      className="flex items-center w-full cursor-pointer border-b-1 border-gray-400 gap-3 p-4 hover:bg-gray-600 hover:text-white"
+      className={`flex items-center w-full cursor-pointer border-b-1 border-gray-400 gap-3 p-4 hover:bg-gray-600 hover:text-white ${
+        activeConvId === item?._id ? "bg-gray-50" : null
+      }`}
       key={key}
+      onClick={handleClickFunc}
     >
       <div className="shrink-0">
         <img
