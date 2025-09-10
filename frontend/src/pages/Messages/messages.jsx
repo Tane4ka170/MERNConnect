@@ -15,6 +15,7 @@ const Messages = () => {
   const [ownData, setOwnData] = useState(null);
   const [activeConvId, setActiveConvId] = useState(null);
   const [selectedConvDetails, setSelectedConvDetails] = useState(null);
+  const [messages,setMessages] = useState([])
 
   useEffect(() => {
     let userData = localStorage.getItem("userInfo");
@@ -29,6 +30,37 @@ const Messages = () => {
       })
       .then((res) => {
         setConversations(res.data.conversations);
+        setSelectedConvDetails(res.data.conversations[0]?._id);
+        let ownId = ownData?._id;
+        let arr = res.data.conversations[0]?.members?.filter(
+          (it) => it._id !== ownId
+        );
+        setSelectedConvDetails(arr[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("An error occurred");
+      });
+  };
+
+  const handleSelectedConv = (id, userData) => {
+    setActiveConvId(id);
+    userData(userData);
+  };
+
+  useEffect(() => {
+    if (activeConvId) {
+      fetchMessages();
+    }
+  }, [activeConvId]);
+
+  const fetchMessages = async () => {
+    await axios
+      .get(`http://localhost:1478/api/message/${activeConvId}`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -57,7 +89,16 @@ const Messages = () => {
                 {/* For each chat */}
                 {conversations.map((item, index) => {
                   return (
-                    <Conversation item={item} key={index} ownData={ownData} />
+                    <Conversation
+                      item={item}
+                      key={index}
+                      ownData={ownData}
+                      handleSelectedConv={handleSelectedConv}
+                      activeConvId={activeConvId}
+                    />
+                  );
+                }
+                    />
                   );
                 })}
               </div>
