@@ -6,9 +6,11 @@ import ImageIcon from "@mui/icons-material/Image";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 
+import socket from "../../socket";
 import Card from "../../components/Card/card";
 import Conversation from "../../components/Conversation/conversation";
 import Advertisement from "../../components/Advertisement/advertisement";
+import { useRef } from "react";
 
 const Messages = () => {
   const [conversations, setConversations] = useState([]);
@@ -19,6 +21,12 @@ const Messages = () => {
   const [loading, setLoading] = useState(false);
   const [imgLink, setImgLink] = useState(null);
   const [messageText, setMessageText] = useState("");
+
+  const ref = useRef();
+
+  useEffect(() => {
+    ref?.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
     let userData = localStorage.getItem("userInfo");
@@ -34,6 +42,7 @@ const Messages = () => {
       .then((res) => {
         setConversations(res.data.conversations);
         setSelectedConvDetails(res.data.conversations[0]?._id);
+        socket.emit("joinConversation", res.data.conversations[0]?._id);
         let ownId = ownData?._id;
         let arr = res.data.conversations[0]?.members?.filter(
           (it) => it._id !== ownId
@@ -48,6 +57,7 @@ const Messages = () => {
 
   const handleSelectedConv = (id, userData) => {
     setActiveConvId(id);
+    socket.emit("joinConversation");
     userData(userData);
   };
 
@@ -104,12 +114,21 @@ const Messages = () => {
         },
         { withCredentials: true }
       )
-      .then((res) => {})
+      .then((res) => {
+        socket.emit("sendMessage", activeConvId, res.data.message);
+      })
       .catch((err) => {
         console.log(err);
         alert("An error occurred");
       });
   };
+
+  useEffect(() => {
+    socket.on("receiveMessage", (response) => {
+      setMessages([...messages, response]);
+      setMessageText("");
+    });
+  }, []);
 
   return (
     <div className="px-5 xl:px-50 py-9 flex gap-5 w-full mt-5 bg-gray-300">
@@ -183,6 +202,7 @@ const Messages = () => {
                         <div
                           className="flex w-full cursor-pointer border-gray-800 gap-3 p-4"
                           key={index}
+                          ref={ref}
                         >
                           <div className="shrink-0">
                             <img
