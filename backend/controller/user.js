@@ -44,6 +44,10 @@ exports.login = async (req, res) => {
   try {
     let { email, password } = req.body;
     const userExists = await User.findOne({ email });
+
+    if (userExists && !userExists.password) {
+      return res.status(400).json({ error: "Kindly sign in using your email" });
+    }
     if (userExists && (await bcryptjs.compare(password, userExists.password))) {
       let token = jwt.sign({ userId: userExists._id }, JWT_SECRET_KEY);
       res.cookie("token", token, cookieOptions);
